@@ -1,2 +1,2 @@
 # Business-Simulation
-#Small company simulation
+Small company simulation
