@@ -45,6 +45,22 @@ def escribir():
         csvwriter = csv.writer(csvfile)
         csvwriter.writerows(lista)
 
+"""
+Salario_Total: Funcion que calcula el salario total de un empleado
+E: El sueldo y las horas trabajadas
+R: Numeros
+S: El salario total
+"""
+def Salario_total():
+    for i in lista:
+        if i[7] == "0":
+            i[9] = str(float(i[3]) * float(i[4]) - (float(i[3]) * float(i[4])) * 0.15)
+        else:
+            i[9] = str((float(i[3]) * float(i[4]) + float(i[3]) * float(i[4]) * 0.15) * float(i[7]))
+            # reedondear a 2 decimales
+            i[9] = str(round(float(i[9]),2))
+    escribir()
+
 ##################################################################
 
 """
@@ -53,7 +69,7 @@ class Empresa(): ESta es una clase que simula una empresa, la cual tiene un nomb
 
 """
 class Empresa():
-    def __init__(self, nombre, apellido, codigo, sueldo, horas, sexo, edad, horas_extra,contratacion):
+    def __init__(self, nombre, apellido, codigo, sueldo, horas, sexo, edad, horas_extra,contratacion,total):
         self.nombre = nombre
         self.apellido = apellido
         self.codigo = codigo
@@ -63,6 +79,7 @@ class Empresa():
         self.edad = edad
         self.contratacion = contratacion
         self.horas_extra = horas_extra
+        self.total = total
     
     """
     Aqui todos los metodos get, que son los que se encargan de retornar los atributos de la clase
@@ -95,6 +112,9 @@ class Empresa():
     def getContratacion(self):
         return self.contratacion
 
+    def getTotal(self):
+        return self.total
+
     """	
     Aqui todos los metodos set, que son los que se encargan de modificar los atributos de la clase
     """
@@ -126,21 +146,26 @@ class Empresa():
     def setContratacion(self, contratacion):
         self.contratacion = contratacion
 
+    def setTotal(self, total):
+        self.total = total
+
     def __str__(self):
-        return ("Nombre: " + self.nombre + "Apellido: " 
+        return ("Nombre: " + self.nombre + " Apellido: " 
                 + self.apellido +" Codigo: " + str(self.codigo) 
                 + " Sueldo: " + str(self.sueldo) + " Horas: " + str(self.horas) 
-                + " Sexo: " + self.sexo + " Edad: " + str(self.edad) +"Horas Extra" + str(self.horas_extra)
-                +" Contratacion: " + self.contratacion)
+                + " Sexo: " + self.sexo + " Edad: " + str(self.edad) +" Horas Extra" + str(self.horas_extra)
+                +" Contratacion: " + self.contratacion + " Total: " + str(self.total))
 
 """
 class Ventana_Empleado(): Esta clase es la que se encarga de crear la ventana Toplevel y los widgets que se van a 
 mostrar en la ventana
-ESta clase tiene varias funciones ademas de la __init__, las cuales son de interfaz o de validacion de datos
+Esta clase tiene varias funciones ademas de la __init__, las cuales son de interfaz o de validacion de datos
 """
 class Ventana_Añadir_Empleado():
 
-    def __init__(self):
+    def __init__(self,ventana):
+
+        self.Ventana = ventana.withdraw()
         self.ventana = Toplevel()
         self.ventana.title("Añadir Empleado")
         self.ventana.geometry("500x500+500+100")
@@ -165,6 +190,7 @@ class Ventana_Añadir_Empleado():
         self.mensaje = StringVar()
         self.contratacion = str(datetime.datetime.now().strftime("%d/%m/%Y"))
         self.horas_extra = "0"
+        self.total = "0"
 
 
         self.crearWidgets()
@@ -173,6 +199,10 @@ class Ventana_Añadir_Empleado():
     def crearWidgets(): Esta funcion es la que se encarga de crear los widgets que se van a mostrar en la ventana
     """
     def crearWidgets(self):
+
+        self.botonVolver = Button(self.ventana, text="Volver", font=("Arial", 15), command=self.volver)
+        self.botonVolver.place(x=375, y=410)
+
         self.titulo = Label(self.ventana, text="Empresa", font=("Arial", 20), bg="blue", fg="white")
         self.titulo.place(x=200, y=10)
 
@@ -235,7 +265,8 @@ class Ventana_Añadir_Empleado():
         edad = self.edad.get()
         sexo = self.sexo.get()
         contratacion =  self.contratacion
-        horas_extra = self.horas_extra.get()
+        horas_extra = self.horas_extra
+        total = self.total
 
         #Condicionales que se tienen que cumplir para que los datos sean guardados en el archivo
 
@@ -326,6 +357,12 @@ class Ventana_Añadir_Empleado():
                 messagebox.showerror("Error", "El nombre debe comenzar con mayuscula")
                 self.nombre.set("")
                 return False
+
+            for i in nombre:
+                if i == " ":
+                    messagebox.showerror("Error", "El nombre no debe contener espacios")
+                    self.nombre.set("")
+                    return False
             
             if apellido[0] != apellido[0].upper():
                 messagebox.showerror("Error", "El apellido debe comenzar con mayuscula")
@@ -341,7 +378,13 @@ class Ventana_Añadir_Empleado():
                 messagebox.showerror("Error", "El apellido no debe contener numeros ni caracteres especiales")
                 self.apellido.set("")
                 return False
-            
+
+            for i in apellido:
+                if i == " ":
+                    messagebox.showerror("Error", "El apellido no debe contener espacios")
+                    self.apellido.set("")
+                    return False     
+
             self.mensaje.set("Datos enviados")
             self.nombre.set("")
             self.apellido.set("")
@@ -353,15 +396,21 @@ class Ventana_Añadir_Empleado():
             
             
             self.empresa = Empresa(nombre, apellido, codigo, sueldo, horas, sexo, edad,
-                horas_extra,contratacion)
+                horas_extra,contratacion,total)
+
             print(self.empresa)
             
             lista.append([self.empresa.nombre, self.empresa.apellido,self.empresa.codigo,
              self.empresa.sueldo, self.empresa.horas, self.empresa.sexo, self.empresa.edad,
-             self.empresa.horas_extra,self.empresa.contratacion])
+             self.empresa.horas_extra,self.empresa.contratacion,self.empresa.total])
 
+            Salario_total()
             escribir()
+            return True
 
+    def volver(self):
+        self.ventana.destroy()
+        self.ventana = Aplicacion()
 """
 class Ventana_Jefe(): Esta clase abre una ventana donde estaran los botones para abrir las otras ventanas que solo puede
 abrir el administrador o jefe de la empresa
@@ -402,14 +451,14 @@ class Ventana_Jefe():
         self.boton5.place(x=200, y=400)
 
         self.boton6 = Button(self.ventana, text="Volver", font=("Arial", 15), command=self.Volver)
-        self.boton6.place(x=350, y=0)
+        self.boton6.place(x=0, y=0)
 
     """
     def añadir_usuario(self): Esta funcion abre una ventana donde se podra añadir un usuario la cual es la class Ventana
     que se hizo anterormente y cierra la ventana principal
     """	
     def añadir_usuario(self):
-        self.ventana1 = Ventana_Añadir_Empleado()
+        self.ventana1 = Ventana_Añadir_Empleado(self.ventana)
 
     """
     def Verificar_Monto(self): Esta funcion abre una ventana donde se podra calcular el salario de los empleados
@@ -465,26 +514,26 @@ class Ventana_Empleado():
         self.boton1.place(x=200, y=100)
 
         self.boton2 = Button(self.ventana, text="Salir", font=("Arial", 15), command=self.ventana.destroy)
-        self.boton2.place(x=200, y=400)
+        self.boton2.place(x=250, y=400)
 
         self.boton3 = Button(self.ventana, text="Añadir Empleado", font=("Arial", 15), command=self.añadir_usuario)
         self.boton3.place(x=200, y=200)
 
         self.boton4 = Button(self.ventana, text="Regresar", font=("Arial", 15), command=self.volver)
-        self.boton4.place(x=200, y=300)
+        self.boton4.place(x=225, y=300)
 
     """
     def Verificar_Monto(self): Esta funcion abre una ventana donde se podra calcular el salario del empleado que esta
     logeado y otras funciones
     """
     def Verificar_Monto(self):
-        self.ventana1 = Salario_Empleado()
+        self.ventana1 = Salario_Empleado(self.ventana)
     
     """
     def añadir_usuario(self): Esta funcion abre una ventana donde se podra añadir un usuario 
     """
     def añadir_usuario(self):
-        self.ventana2 = Ventana_Añadir_Empleado()
+        self.ventana2 = Ventana_Añadir_Empleado(self.ventana)
 
     """
     def volver(self): Esta funcion abre una la ventana principal
@@ -493,6 +542,7 @@ class Ventana_Empleado():
         self.ventana.destroy()
         self.Ventana = Aplicacion()
 
+#Informe detallado de los empleados
 """
 Clase C_Salario(): Esta clase es la que se encarga de calcular el salario de los empleados y tambien se pede solicitar
 el de un empleado en especifico, esta clase tomara de la lista de la clase Ventana para calcular el salario y mostrar las
@@ -528,14 +578,17 @@ class C_Salario():
         self.entrada1 = Entry(self.ventana, textvariable=self.codigo, font=("Arial", 15))
         self.entrada1.place(x=150, y=50)
 
-        self.boton1 = Button(self.ventana, text="Calcular Salario", font=("Arial", 15), command=self.calcular)
+        self.boton1 = Button(self.ventana, text="Calcular Salario Especifico", font=("Arial", 15), command=self.calcular)
         self.boton1.place(x=200, y=100)
 
-        self.boton2 = Button(self.ventana, text="Calcular Todo", font=("Arial", 15), command=self.calcular_todo)
+        self.boton2 = Button(self.ventana, text="Calcular Todos", font=("Arial", 15), command=self.calcular_todo)
         self.boton2.place(x=200, y=150)
 
         self.boton3 = Button(self.ventana, text="Horas Extra", font=("Arial", 15), command=self.horas_extra)
         self.boton3.place(x=200, y=200)
+
+        self.boton4 = Button(self.ventana, text="Regresar", font=("Arial", 15), command=self.volver)
+        self.boton4.place(x=200, y=250)
 
         self.label2 = Label(self.ventana, textvariable=self.mensaje, font=("Arial", 15), bg="blue", fg="white")
         self.label2.place(x=50, y=250)
@@ -552,10 +605,8 @@ class C_Salario():
         else:
             for i in lista:
                 if codigo == i[2]:
-                    self.reduccion = float(i[3]) * float(i[4]) * 0.15
-                    self.total = float(i[3] * i[4] - self.reduccion)
                     messagebox.showinfo("Salario", "El salario de " + i[0] + i[1] +
-                    " es de " +  str(float(i[3]) * float(i[4]) - (float(i[3]) * float(i[4])) * 0.15))
+                    " es de " +  str(i[9]))
                     return True
             messagebox.showerror("Error", "El codigo no existe")
             return False
@@ -608,10 +659,15 @@ class C_Salario():
         self.tabla.place(x=0, y=0)
         self.tabla.pack()
 
+        """
+        en esta parte se hace un for para recorrer la lista y se hace un append para agregar los datos a la tabla
+        de la forma en que se quiere que se muestren, el total se calcula multiplicando e sub total por las
+        horas extra, siempre y cuando las horas extra sean mayores a 0
+        """
         for i in lista:
             self.tabla.insert("", 0, text=i[0], values=(i[1], i[2],  i[3], i[4], i[5], i[6], 
              str((float(i[3]) * float(i[4])) * 0.15) ,
-             str(float(i[3]) * float(i[4]) - (float(i[3]) * float(i[4])) * 0.15),i[7], i[8]))
+             str(float(i[3]) * float(i[4]) - (float(i[3]) * float(i[4])) * 0.15),i[7], i[8], i[9]))
 
     """
     def horas_extra(self): Esta funcion se encarga de sumar las horas extra de los empleados ya sea de uno en especifico
@@ -828,13 +884,20 @@ class C_Salario():
                     print(lista2)
         lista2.clear()
 
+    ############################# Boton 4 #############################
+    def volver(self):
+        self.ventana.destroy()
+        ventana = Ventana_Jefe(self.ventana)
+
+#Calcula el salario de un empleado en especifico 
 """
 class Salario_Empleado(): Esta clase es la que se encarga de calcular el salario de un empleado en especifico
 """  
 class Salario_Empleado():
 
-    def __init__(self):
+    def __init__(self,ventana):
 
+        self.Ventana = ventana.withdraw()
         self.ventana = Toplevel()
         self.ventana.geometry("500x500+500+100")
         self.ventana.title("Calcular Salario")
@@ -865,10 +928,13 @@ class Salario_Empleado():
         self.boton1.place(x=200, y=100)
 
         self.boton2 = Button(self.ventana, text="Calcular Todo", font=("Arial", 15), command=self.liquidacion)
-        self.boton2.place(x=200, y=150)
+        self.boton2.place(x=175, y=150)
 
         self.label2 = Label(self.ventana, textvariable=self.mensaje, font=("Arial", 15), bg="blue", fg="white")
         self.label2.place(x=50, y=250)
+
+        self.boton3 = Button(self.ventana, text="Volver", font=("Arial", 15), command=self.volver)
+        self.boton3.place(x=200, y=300)
 
     ######### Boton 1 #########
     """
@@ -892,13 +958,13 @@ class Salario_Empleado():
     ######### Boton 2 #########
 
     """	
-    def liquidacion(self): Esta funcion se encarga de calcular el salario del empleado en especifico
+    def liquidacion(self): Esta funcion se encarga de calcular la liquidacion de un empleado en especifico
     """
     def liquidacion(self):
         codigo = self.codigo.get()
         for i in lista:
-            if i[2] == codigo:
-                fecha = i[7]
+            if codigo == i[2]:
+                fecha = i[8]
                 fecha = fecha.split("/")
                 fecha = [int(i) for i in fecha]
                 fecha = datetime.date(fecha[2], fecha[1], fecha[0])
@@ -906,23 +972,31 @@ class Salario_Empleado():
                 diferencia = fecha_actual - fecha
                 diferencia = diferencia.days
                 diferencia = diferencia/30
+
                 if diferencia > 9:
                     i.append(str(float(i[4])*float(i[3])+3500))
                     self.mensaje.set("Se calculo el salario total del empleado")
-                    messagebox.showinfo("Liquidacion", "El salario total del empleado es: "+str(i[8]))
+                    messagebox.showinfo("Liquidacion", "El salario total del empleado es: "+str(i[9]))
                 elif diferencia > 6:
                     i.append(str(float(i[4])*float(i[3])+2500))
                     self.mensaje.set("Se calculo el salario total del empleado")
-                    messagebox.showinfo("Liquidacion", "El salario total del empleado es: "+str(i[8]))
+                    messagebox.showinfo("Liquidacion", "El salario total del empleado es: "+str(i[9]))
                 elif diferencia > 3:
                     i.append(str(float(i[4])*float(i[3])+1500))
                     self.mensaje.set("Se calculo el salario total del empleado")
-                    messagebox.showinfo("Liquidacion", "El salario total del empleado es: "+str(i[8]))
+                    messagebox.showinfo("Liquidacion", "El salario total del empleado es: "+str(i[9]))
                 else:
                     i.append(str(float(i[4])*float(i[3])+500))
                     self.mensaje.set("Se calculo el salario total del empleado")
-                    messagebox.showinfo("Liquidacion", "El salario total del empleado es: "+str(i[8]))
+                    messagebox.showinfo("Liquidacion", "El salario total del empleado es: "+str(i[9]))
+                return True
+    
+    ######### Boton 3 #########
+    def volver(self):
+        #self.ventana.destroy()
+        self.ventana2 = Ventana_Empleado(self.ventana)
 
+#Clase Ventana_Ordenar lista de empleados
 """
 class Ventana_Ordenar(): Esta clase es la que se encarga de ordenar los empleados por sueldo, edad y nombre	
 """
@@ -952,8 +1026,8 @@ class Ventana_Ordenar():
         self.label1.place(x=50, y=50)
 
         self.combobox1 = ttk.Combobox(self.ventana, textvariable=self.orden, state="readonly")
-        self.combobox1["values"] = ("Sueldo", "Edad", "Nombre", "Codigo", "Sexo", "Horas por Semana", "Sub Total"
-        , "Apellido", "Fecha de Ingreso", "Salario Total","Horas Extras")
+        self.combobox1["values"] = ("Nombre", "Apellido","Codigo", "Sueldo","Horas por Semana", "Sexo", "Edad"
+        , "Horas Extras", "Fecha de Ingreso","Sub Total", "Salario Total")
         self.combobox1.place(x=200, y=50)
 
         self.boton1 = Button(self.ventana, text="Ordenar", font=("Arial", 15), command=self.ordenar)
@@ -973,19 +1047,14 @@ class Ventana_Ordenar():
 
     """
     def ordenar(self): Esta funcion se encarga de ordenar los empleados por sueldo, edad y nombre
+    E: los datos de los empleados
+    S: los datos de los empleados ordenados
+    R: que los datos sean validos
     """	
     def ordenar(self):
         orden = self.orden.get()
 
-        if orden == "Sueldo":
-            lista.sort(key=lambda lista: lista[3])
-            self.mensaje.set("Se ordeno por sueldo")
-
-        elif orden == "Edad":
-            lista.sort(key=lambda lista: lista[6])
-            self.mensaje.set("Se ordeno por edad")
-
-        elif orden == "Nombre":
+        if orden == "Nombre":
             lista.sort(key=lambda lista: lista[0])
             self.mensaje.set("Se ordeno por nombre")
 
@@ -997,38 +1066,53 @@ class Ventana_Ordenar():
             lista.sort(key=lambda lista: lista[2])
             self.mensaje.set("Se ordeno por codigo")
 
-        elif orden == "Sexo":
-            lista.sort(key=lambda lista: lista[5])
-            self.mensaje.set("Se ordeno por sexo")
+        elif orden == "Sueldo":
+            lista.sort(key=lambda lista: lista[3])
+            self.mensaje.set("Se ordeno por sueldo")
 
         elif orden == "Horas por Semana":
             lista.sort(key=lambda lista: lista[4])
             self.mensaje.set("Se ordeno por horas por semana")
+
+        elif orden == "Sexo":
+            lista.sort(key=lambda lista: lista[5])
+            self.mensaje.set("Se ordeno por sexo")
+
+        elif orden == "Edad":
+            lista.sort(key=lambda lista: lista[6])
+            self.mensaje.set("Se ordeno por edad")
+
+        elif orden == "Horas Extras":
+            lista.sort(key=lambda lista: lista[7])
+            self.mensaje.set("Se ordeno por horas extras")
+
+        elif orden == "Fecha de Ingreso":
+            lista.sort(key=lambda lista: lista[8])
+            self.mensaje.set("Se ordeno por fecha de ingreso")
 
         elif orden == "Sub Total":
             lista.sort(key=lambda lista: str(float(lista[4]) * float(lista[3])-(float(lista[4])*float(lista[3]) * 0.15)))
             self.mensaje.set("Se ordeno por salario total")
         
         elif orden == "Salario Total":
-            lista.sort(key=lambda lista: lista[8])
-            self.mensaje.set("Se ordeno por salario total")
-        
-        elif orden == "Fecha de Ingreso":
-            lista.sort(key=lambda lista: lista[7])
-            self.mensaje.set("Se ordeno por fecha de ingreso")
-        
-        elif orden == "Horas Extras":
             lista.sort(key=lambda lista: lista[9])
-            self.mensaje.set("Se ordeno por horas extras")
+            self.mensaje.set("Se ordeno por salario total")
 
         else:
             self.mensaje.set("Seleccione una opcion")
 
     ######### Boton 2 #########
+    """
+    def ver_tabla(self): Esta funcion se encarga de mostrar la tabla con los datos ordenados
+    E: los datos de los empleados ordenados
+    S: la tabla con los datos ordenados
+    R: que los datos sean validos
+    """
 
     def ver_tabla(self):
        self.tabla = C_Salario.calcular_todo(self)
 
+#Ventana Retirar Empleado
 """	
 class Ventana_Retirar(): Esta clase es la que se encarga de retirar un empleado de la lista y calcular su salario total
 """
@@ -1216,12 +1300,15 @@ class Ventana_Retirar():
                     messagebox.showinfo("Liquidacion", "El salario total del empleado es: "+str(i[8]))
                     self.codigo.set("")
 
+#Clase de la ventana principal
 """
 class Ventana_Pricipal(): Esta clase es la que se encarga de crear la ventana principal deonde hbra dos botones
 uno para ingresar como empleado y otro para ingresar como administrador o Jefe	
 """
 class Ventana_Pricipal():
-    def __init__(self, ventana):
+    def __init__(self, ventana,contador):
+
+        self.contador = contador
         self.ventana = ventana
         self.ventana.title("Menu principal")
         self.ventana.iconbitmap("Adds/icon.ico")
@@ -1234,28 +1321,34 @@ class Ventana_Pricipal():
          command=self.Contraseña)
         self.boton2.place(x=150, y=200)
 
-    def Contraseña(self):
-        self.ventana2 = Toplevel(self.ventana)
-        self.ventana2.iconbitmap("Adds/icon.ico")
-        self.ventana2.title("Contraseña")
-        self.ventana2.geometry("500x500+500+100")
-        self.ventana2.config(bg="blue")
+        self.contador = 0
 
-        self.label1 = Label(self.ventana2, text="Contraseña", font=("Arial", 15), bg="blue", fg="white")
+    def Contraseña(self):
+        """
+        Cerrar la ventana anterior y dejar esta con principal
+        """
+        self.ventana.destroy()
+        self.ventana = Tk()
+        self.ventana.iconbitmap("Adds/icon.ico")
+        self.ventana.title("Contraseña")
+        self.ventana.geometry("500x500+500+100")
+        self.ventana.config(bg="blue")
+
+        self.label1 = Label(self.ventana, text="Contraseña", font=("Arial", 15), bg="blue", fg="white")
         self.label1.place(x=50, y=50)
 
         self.contraseña = StringVar()
 
         #Hacer que el usuario no pueda ver la contraseña que esta escribiendo
 
-        self.entrada1 = Entry(self.ventana2, textvariable=self.contraseña, font=("Arial", 15), show="*")
+        self.entrada1 = Entry(self.ventana, textvariable=self.contraseña, font=("Arial", 15), show="*")
         self.entrada1.place(x=200, y=50)
 
-        self.boton1 = Button(self.ventana2, text="Ingresar", font=("Arial", 15), command=self.ingresar_administrador)
-        self.boton1.place(x=50, y=150)
+        self.boton1 = Button(self.ventana, text="Ingresar", font=("Arial", 15), command=self.ingresar_administrador)
+        self.boton1.place(x=200, y=150)
 
-        self.boton2 = Button(self.ventana2, text="Volver", font=("Arial", 15), command=self.Volver)
-        self.boton2.place(x=200, y=150)
+        self.boton2 = Button(self.ventana, text="Volver", font=("Arial", 15), command=self.Volver)
+        self.boton2.place(x=0, y=0)
     
     """
     def ingresar_administrador(self): Esta funcion se encarga de verificar si la contraseña es correcta y si lo es
@@ -1264,15 +1357,24 @@ class Ventana_Pricipal():
     def ingresar_administrador(self):
         contraseña = self.contraseña.get()
         if contraseña == "One Piece":
-            self.ventana3 = Ventana_Jefe(self.ventana)
-            contraseña = self.contraseña.set("")
-            self.ventana2.destroy()
-            self.ventana3  = Ventana_Jefe(self.ventana)
-
+            self.llamar()
         else:
             messagebox.showerror("Error", "Contraseña incorrecta")
             contraseña = self.contraseña.set("")
+            self.contador += 1
+            if self.contador == 3:
+                messagebox.showerror("Error", "Ha ingresado mal la contraseña 3 veces, el programa se cerrara")
+                self.ventana.destroy()
+
+            else:
+                pass
     
+    """	
+    def llamar(self): Esta funcion se encarga de destruir la ventana de contraseña y llamar a la clase Ventana_Jefe
+    """	
+    def llamar(self):
+        self.ventana2 = Ventana_Jefe(self.ventana)
+
     """
     def ingresar_empleado(self): Esta funcion se encarga de llamar a la clase Ventana_Empleado
     """
@@ -1283,15 +1385,17 @@ class Ventana_Pricipal():
     def Volver(self): Esta funcion se encarga de destruir la ventana de contraseña y volver a la ventana principal
     """
     def Volver(self):
-        self.ventana2.destroy()
+        self.ventana.destroy()
         self.Ventana = Aplicacion()
+
+#Clase de ejecucion
 """
 class Aplicacion(): Esta clase es la que se encarga de crear la ventana y llamar a la clase Ventana
 """
 class Aplicacion():
     def __init__(self):
         self.ventana = Tk()
-        self.ventana_principal = Ventana_Pricipal(self.ventana)
+        self.ventana_principal = Ventana_Pricipal(self.ventana,0)
         self.ventana.mainloop()
 
 leer()
