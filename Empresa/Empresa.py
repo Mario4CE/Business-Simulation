@@ -9,9 +9,14 @@ import os # Para abrir archivos
 import time # Para usar el reloj
 import datetime # Para usar el reloj
 import threading # Para usar el reloj
+import openpyxl # Para usar archivos de excel
+from openpyxl.chart import  Reference # Para usar archivos de excel
+from openpyxl.chart import BarChart, LineChart, PieChart # Para usar archivos de excel
 
-lista = []
-lista2 = []
+
+lista = [] # Lista que contendra los datos de los empleados
+lista2 = [] #donde se guardan los datos de los empleados que se van a eliminar o modificar
+ultima = [] # Ultima vez de ejecucion del codigo
 
 """
 Imagenes: esta funcion pondra imagenes con un tamaño determinado
@@ -29,7 +34,10 @@ def Imagenes(img,size):
     return imagen
     
 """
-leerRobot:Funcion que lee el archivo de texto con las caracteristica del robot
+leer:Funcion que lee el archivo de texto con las caracteristica del robot
+E: Nada
+R: Nada
+S: Una lista con las caracteristicas de los empleados
 """
 def leer():
     with open("Datos.csv",'r') as csvfile:
@@ -39,6 +47,9 @@ def leer():
 
 """
 Funcion que escribe en el archivo de texto(Actualiza el archivo)
+E: Nada
+R: Nada
+S: Nada
 """
 def escribir():
     with open("Datos.csv",'w',newline="") as csvfile:
@@ -46,40 +57,161 @@ def escribir():
         csvwriter.writerows(lista)
 
 """
+leer2:Funcion que lee el archivo de texto .txt con la ultima vez de ejecucion del codigo
+E: Nada
+R: Nada
+S: Una lista con la ultima vez de ejecucion del codigo
+"""
+def leer2():
+    with open("Ultima.txt",'r') as txtfile:
+        for line in txtfile:
+            ultima.append(line)
+"""
+actualizar:Funcion que actualiza el archivo de texto .txt con la ultima vez de ejecucion del codigo
+E: Nada
+R: Nada
+S: Nada
+"""
+def actualizar():
+    with open("Ultima.txt",'w',newline="") as txtfile:
+        txtfile.write(str(datetime.datetime.now().strftime("%d/%m/%Y")))
+
+"""
 Salario_Total: Funcion que calcula el salario total de un empleado
-E: El sueldo y las horas trabajadas
+E: la lista de empleados
 R: Numeros
 S: El salario total
 """
 def Salario_total():
     for i in lista:
         if i[7] == "0":
-            i[9] = str(float(i[3]) * float(i[4]) - (float(i[3]) * float(i[4])) * 0.15)
+            i[9] = str((float(i[3]) * float(i[4]) - (float(i[3]) * float(i[4])) * 0.15) * 2)
         else:
-            i[9] = str((float(i[3]) * float(i[4]) + float(i[3]) * float(i[4]) * 0.15) * float(i[7]))
+            i[9] = str((float(i[3]) * float(i[4]) + float(i[3]) * float(i[4]) * 0.15) * float(i[7]) * 2)
             # reedondear a 2 decimales
             i[9] = str(round(float(i[9]),2))
     escribir()
 
+""""
+Excel: Funcion que crea un archivo de excel con los datos de los empleados y se actualiza cada vez que se ejecuta
+ el codigo
+E: Nada
+R: Nada
+S: Nada
+"""	
+def Excel():
+    wb = openpyxl.load_workbook("DatosE.xlsx")
+    ws = wb["Datos Empleados"]
+    ws.delete_rows(1,ws.max_row)
+
+    ws.append(["Nombre","Apellido","Codigo","Sueldo","Horas","Sexo","Edad","Horas Extra","Fecha de Contratacion",
+    "Salario Total"])
+
+    # Se ajusta el tamaño de las columnas y su fuente y se centrar el texto
+    ws.column_dimensions['A'].width = 20
+    ws.column_dimensions['B'].width = 20
+    ws.column_dimensions['C'].width = 20
+    ws.column_dimensions['D'].width = 20
+    ws.column_dimensions['E'].width = 20
+    ws.column_dimensions['F'].width = 20
+    ws.column_dimensions['G'].width = 20
+    ws.column_dimensions['H'].width = 20
+    ws.column_dimensions['I'].width = 30
+    ws.column_dimensions['J'].width = 20
+
+    ws['A1'].font = openpyxl.styles.Font(size=14)
+    ws['B1'].font = openpyxl.styles.Font(size=14)
+    ws['C1'].font = openpyxl.styles.Font(size=14)
+    ws['D1'].font = openpyxl.styles.Font(size=14)
+    ws['E1'].font = openpyxl.styles.Font(size=14)
+    ws['F1'].font = openpyxl.styles.Font(size=14)
+    ws['G1'].font = openpyxl.styles.Font(size=14)
+    ws['H1'].font = openpyxl.styles.Font(size=14)
+    ws['I1'].font = openpyxl.styles.Font(size=14)
+    ws['J1'].font = openpyxl.styles.Font(size=14)
+
+    ws['A1'].alignment = openpyxl.styles.Alignment(horizontal="center")
+    ws['B1'].alignment = openpyxl.styles.Alignment(horizontal="center")
+    ws['C1'].alignment = openpyxl.styles.Alignment(horizontal="center")
+    ws['D1'].alignment = openpyxl.styles.Alignment(horizontal="center")
+    ws['E1'].alignment = openpyxl.styles.Alignment(horizontal="center")
+    ws['F1'].alignment = openpyxl.styles.Alignment(horizontal="center")
+    ws['G1'].alignment = openpyxl.styles.Alignment(horizontal="center")
+    ws['H1'].alignment = openpyxl.styles.Alignment(horizontal="center")
+    ws['I1'].alignment = openpyxl.styles.Alignment(horizontal="center")
+    ws['J1'].alignment = openpyxl.styles.Alignment(horizontal="center")
+
+    # Se agregan los datos de los empleados y se cetran en las celdas el resto de los datos
+    for i in lista:
+        ws.append(i)
+    for i in range(2,len(lista)+2):
+        ws['A'+str(i)].alignment = openpyxl.styles.Alignment(horizontal="center")
+        ws['B'+str(i)].alignment = openpyxl.styles.Alignment(horizontal="center")
+        ws['C'+str(i)].alignment = openpyxl.styles.Alignment(horizontal="center")
+        ws['D'+str(i)].alignment = openpyxl.styles.Alignment(horizontal="center")
+        ws['E'+str(i)].alignment = openpyxl.styles.Alignment(horizontal="center")
+        ws['F'+str(i)].alignment = openpyxl.styles.Alignment(horizontal="center")
+        ws['G'+str(i)].alignment = openpyxl.styles.Alignment(horizontal="center")
+        ws['H'+str(i)].alignment = openpyxl.styles.Alignment(horizontal="center")
+        ws['I'+str(i)].alignment = openpyxl.styles.Alignment(horizontal="center")
+        ws['J'+str(i)].alignment = openpyxl.styles.Alignment(horizontal="center")
+
+    wb.save("DatosE.xlsx") 
+
+"""
+Resetear_H_E: Funcion que resetea las horas extra de los empleados, si se cumple algunas de las siguientes condiciones
+1. Si se esta en el dia 15 o 30 del mes
+2. Si la ultima vez que se resetearon las horas extra fue hace mas de 15 dias
+E: Nada
+R: Nada
+S: Nada
+"""
+def Resetear_H_E():
+    if  str(datetime.datetime.now().strftime("%d")) == "15" or str(datetime.datetime.now().strftime("%d")) == "30":
+        for i in lista:
+            if i[7] != "0":
+                i[7] = "0"
+        escribir()
+    elif int(datetime.datetime.now().strftime("%m"))> int(ultima[0][3:5]):
+        for i in lista:
+            if i[7] != "0":
+                i[7] = "0"
+        escribir()
+    
+    elif int(datetime.datetime.now().strftime("%Y")) > int(ultima[0][6:10]):
+        for i in lista:
+            if i[7] != "0":
+                i[7] = "0"
+        escribir()
+
+    elif int(datetime.datetime.now().strftime("%d")) - int(ultima[0][0:2]) > 15:
+        for i in lista:
+            if i[7] != "0":
+                i[7] = "0"
+        escribir()
+    
+    else:
+        pass
+
 ##################################################################
 
 """
-class Empresa(): ESta es una clase que simula una empresa, la cual tiene un nombre, un codigo, un sueldo,
- horas trabajadas, sexo y edad, todo representado de manaera grafica con tkinter
-
+class Empresa(): ESta es una clase que simula una empresa, la cual tiene varios atributos y metodos
+que se le asignan a cada empleado
 """
+
 class Empresa():
     def __init__(self, nombre, apellido, codigo, sueldo, horas, sexo, edad, horas_extra,contratacion,total):
-        self.nombre = nombre
-        self.apellido = apellido
-        self.codigo = codigo
-        self.sueldo = sueldo
-        self.horas = horas
-        self.sexo = sexo
-        self.edad = edad
-        self.contratacion = contratacion
-        self.horas_extra = horas_extra
-        self.total = total
+        self.nombre = nombre # Nombre del empleado
+        self.apellido = apellido # Apellido del empleado
+        self.codigo = codigo # Codigo del empleado
+        self.sueldo = sueldo # Sueldo del empleado(base)
+        self.horas = horas # Horas trabajadas del empleado por semana
+        self.sexo = sexo # Sexo del empleado
+        self.edad = edad # Edad del empleado
+        self.contratacion = contratacion # Fecha de contratacion del empleado
+        self.horas_extra = horas_extra # Horas extra trabajadas por el empleado
+        self.total = total # Salario total del empleado
     
     """
     Aqui todos los metodos get, que son los que se encargan de retornar los atributos de la clase
@@ -149,6 +281,12 @@ class Empresa():
     def setTotal(self, total):
         self.total = total
 
+    """
+    __str__: Esta funcion se encarga de retornar los atributos de la clase en forma de string
+    E: Nada
+    R: Nada
+    S: Un string con los atributos de la clase
+    """
     def __str__(self):
         return ("Nombre: " + self.nombre + " Apellido: " 
                 + self.apellido +" Codigo: " + str(self.codigo) 
@@ -157,10 +295,12 @@ class Empresa():
                 +" Contratacion: " + self.contratacion + " Total: " + str(self.total))
 
 """
-class Ventana_Empleado(): Esta clase es la que se encarga de crear la ventana Toplevel y los widgets que se van a 
+class Ventana_Añadir_Empleado(): Esta clase es la que se encarga de crear la ventana Toplevel y los widgets que se van a 
 mostrar en la ventana
-Esta clase tiene varias funciones ademas de la __init__, las cuales son de interfaz o de validacion de datos
+Esta clase tiene varias funciones ademas de la __init__, las cuales son de interfaz o de validacion de datos, 
+su funcion principal es la de añadir un empleado a la lista de empleados
 """
+
 class Ventana_Añadir_Empleado():
 
     def __init__(self,ventana):
@@ -179,7 +319,7 @@ class Ventana_Añadir_Empleado():
         self.ventana.config(relief="groove")
         self.ventana.config(cursor="pirate")
 
-
+        # Variables
         self.nombre = StringVar()
         self.apellido = StringVar()
         self.codigo = StringVar()
@@ -255,6 +395,9 @@ class Ventana_Añadir_Empleado():
     """
     Esta funcion se encarga de validar los datos que se ingresan en los Entry y los Radiobutton
     Tambien se encarga de enviar los datos para que estos sean guardados en el archivo
+    E: los datos que se ingresan en los Entry y los Radiobutton
+    S: Guardar los datos en el archivo
+    R: Los datos no pueden estar vacios, ni pueden ser invalidos
     """
     def enviar(self):
         nombre = self.nombre.get()
@@ -411,14 +554,17 @@ class Ventana_Añadir_Empleado():
     def volver(self):
         self.ventana.destroy()
         self.ventana = Aplicacion()
+
 """
 class Ventana_Jefe(): Esta clase abre una ventana donde estaran los botones para abrir las otras ventanas que solo puede
 abrir el administrador o jefe de la empresa
 """	
 
+#Clase para la ventana del jefe
 class Ventana_Jefe():
 
-    def __init__(self, ventana):
+    def __init__(self,ventana):
+
         self.Ventana = ventana.withdraw()
         self.ventana = Toplevel()
         self.ventana.geometry("500x500+500+100")
@@ -490,6 +636,7 @@ class Ventana_Jefe():
 class Ventana_Empleado(): Esta clase abre una ventana donde estaran los botones para abrir las otras ventanas disponibles 
 para los empleados
 """
+# Esta ventana solo la puede abrir un empleado
 class Ventana_Empleado():
 
     def __init__(self,ventana):
@@ -542,7 +689,6 @@ class Ventana_Empleado():
         self.ventana.destroy()
         self.Ventana = Aplicacion()
 
-#Informe detallado de los empleados
 """
 Clase C_Salario(): Esta clase es la que se encarga de calcular el salario de los empleados y tambien se pede solicitar
 el de un empleado en especifico, esta clase tomara de la lista de la clase Ventana para calcular el salario y mostrar las
@@ -596,6 +742,9 @@ class C_Salario():
     ############################## FUNCIONES INDEPENDIENTES A LAS HORAS EXTRA ##############################
     """
     def calcular(self): Esta funcion se encarga de calcular el salario de un empleado en especifico
+    E: codigo
+    S: el salario del empleado
+    R: el codigo debe existir
     """	
     def calcular(self):
         codigo = self.codigo.get()
@@ -613,6 +762,9 @@ class C_Salario():
                 
     """
     def calcular_todo(self): Esta funcion se encarga de calcular el salario de todos los empleados
+    E: lista de empleados
+    S: el salario de todos los empleados
+    R: la lista no puede estar vacia
     """	
     def calcular_todo(self):
         self.ventana2 = Toplevel()  
@@ -659,16 +811,13 @@ class C_Salario():
         self.tabla.place(x=0, y=0)
         self.tabla.pack()
 
-        """
-        en esta parte se hace un for para recorrer la lista y se hace un append para agregar los datos a la tabla
-        de la forma en que se quiere que se muestren, el total se calcula multiplicando e sub total por las
-        horas extra, siempre y cuando las horas extra sean mayores a 0
-        """
+        # Se encarga de mostrar los datos en la tabla
         for i in lista:
             self.tabla.insert("", 0, text=i[0], values=(i[1], i[2],  i[3], i[4], i[5], i[6], 
              str((float(i[3]) * float(i[4])) * 0.15) ,
              str(float(i[3]) * float(i[4]) - (float(i[3]) * float(i[4])) * 0.15),i[7], i[8], i[9]))
 
+    ############################## FUNCIONES DE HORAS EXTRA ##############################
     """
     def horas_extra(self): Esta funcion se encarga de sumar las horas extra de los empleados ya sea de uno en especifico
     o de todos o de solo algunos empleados
@@ -708,12 +857,12 @@ class C_Salario():
     #############################Boton 1#############################
         """
         def calcular_horas(self): Esta funcion se encarga de calcular las horas extra de un empleado en especifico
+        E: seleciona un empleado de la lista y se coloca las horas extra que trabajo
+        S: se muestra en una tabla las horas extra que trabajo el empleado
+        R: solo se puede seleccionar un empleado de la lista
         """
     def calcular_horas(self):
             horas = self.horas.get()
-            # sigue la logica de seleccionar los empleados que se van a calcular las horas extra
-            # y luego se hace un for para calcular las horas extra de cada uno de los empleados
-            # seleccionados
             listbox = Listbox(self.ventana1, width=50, height=10)
             listbox.place(x=50, y=200)
             for i in lista:
@@ -732,7 +881,8 @@ class C_Salario():
         self.codigo.set(value[0:4])
 
     """  
-    def calcular_uno(self): Esta funcion se encarga de calcular las horas extra de un empleado en especifico
+    def calcular_uno(self): Esta funcion se encarga de calcular las horas extra de un empleado en especifico, aqui 
+    se le suman lo extra que trabajo
     """
     def calcular_uno(self): 
         horas = self.horas.get()
@@ -753,6 +903,9 @@ class C_Salario():
     ############################# Boton 2 #############################
     """
     def calcular_todo_horas(self): Esta funcion se encarga de calcular las horas extra de todos los empleados
+    E: se coloca las horas extra que trabajo cada empleado
+    S: se muestra en una tabla las horas extra que trabajo cada empleado
+    R: solo se puede seleccionar un empleado de la lista
     """
     def calcular_todo_horas(self):
             self.ventana2 = Toplevel()
@@ -830,9 +983,6 @@ class C_Salario():
     """
     def calcular_algunos(self):
             horas = self.horas.get()
-            # sigue la logica de seleccionar los empleados que se van a calcular las horas extra
-            # y luego se hace un for para calcular las horas extra de cada uno de los empleados
-            # seleccionados
             listbox = Listbox(self.ventana3, width=50, height=10)
             listbox.place(x=50, y=200)
             for i in lista:
@@ -868,7 +1018,6 @@ class C_Salario():
     y de sumarlas a sus horas extra totales
     """
     def calcular_algunos2(self):
-        print(lista2)
         horas = self.horas.get()
         for i in lista:
             for j in lista2:
@@ -881,13 +1030,12 @@ class C_Salario():
                     "Se ha sumado " + str(horas) + " a las horas extra de " + i[0] + " " + i[1])
                     self.total = 0
                     ventana = C_Salario(self.ventana)
-                    print(lista2)
         lista2.clear()
 
     ############################# Boton 4 #############################
     def volver(self):
-        self.ventana.destroy()
-        ventana = Ventana_Jefe(self.ventana)
+        #self.ventana.destroy()
+        self.ventana = Ventana_Jefe(self.ventana)
 
 #Calcula el salario de un empleado en especifico 
 """
@@ -949,7 +1097,7 @@ class Salario_Empleado():
             for i in lista:
                 if codigo == i[2]:
                     messagebox.showinfo("Salario", "El salario de " + i[0] + " " + i[1] +
-                    " es de " +  str(float(i[3]) * float(i[4]) - ((float(i[3]) * float(i[4])) * 0.15)))
+                    " es de " +  str(float(i[9])))
                     return True
             self.mensaje.set("El codigo no existe")
             messagebox.showerror("Error", "El codigo no existe")
@@ -1046,7 +1194,7 @@ class Ventana_Ordenar():
     ######### Boton 1 #########
 
     """
-    def ordenar(self): Esta funcion se encarga de ordenar los empleados por sueldo, edad y nombre
+    def ordenar(self): Esta funcion se encarga de ordenar los empleados por sueldo, edad y nombre...
     E: los datos de los empleados
     S: los datos de los empleados ordenados
     R: que los datos sean validos
@@ -1398,8 +1546,16 @@ class Aplicacion():
         self.ventana_principal = Ventana_Pricipal(self.ventana,0)
         self.ventana.mainloop()
 
+#Funciones y clases para el funcionamiento del programa
+
 leer()
+leer2()
+Salario_total()
+Resetear_H_E()
+actualizar()
+Excel()
 aplicacion = Aplicacion()
+
 
 
     
