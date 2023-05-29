@@ -4,14 +4,18 @@ import csv
 from tkinter import messagebox # Para mostrar mensajes
 from tkinter import ttk # Para usar los combobox
 from tkinter import filedialog # Para abrir archivos
-from PIL import Image, ImageTk  # Ajusta el tamaño de la imagen
+from PIL import Image, ImageTk # Para usar imagenes
+import PIL.Image # Ajusta el tamaño de la imagen
 import os # Para abrir archivos
 import time # Para usar el reloj
 import datetime # Para usar el reloj
 import threading # Para usar el reloj
 import openpyxl # Para usar archivos de excel
 from openpyxl.chart import  Reference # Para usar archivos de excel
-from openpyxl.chart import BarChart, LineChart, PieChart # Para usar archivos de excel
+from matplotlib import pyplot as plt # Para las graficas
+from matplotlib import style # Para las graficas
+from matplotlib import animation # Para las graficas
+from matplotlib import get_backend
 
 
 lista = [] # Lista que contendra los datos de los empleados
@@ -27,11 +31,11 @@ S: la imagen con el tamaño indicado
 def Imagenes(img,size):
     ruta = None
     if size != None:
-        ruta = Image.open("Adds/"+img).resize((size),Image.ANTIALIAS)
+        ruta = PIL.Image.open("Adds/"+img).resize((size))
     else:
-        ruta = Image.open("Adds/"+img)
+        ruta = PIL.Image.open("Adds/"+img)
     imagen = ImageTk.PhotoImage(ruta)
-    return imagen
+    return imagen 
     
 """
 leer:Funcion que lee el archivo de texto con las caracteristica del robot
@@ -193,6 +197,7 @@ def Resetear_H_E():
     else:
         pass
 
+
 ##################################################################
 
 """
@@ -300,7 +305,7 @@ mostrar en la ventana
 Esta clase tiene varias funciones ademas de la __init__, las cuales son de interfaz o de validacion de datos, 
 su funcion principal es la de añadir un empleado a la lista de empleados
 """
-
+#Clase que crea la ventana para añadir un empleado
 class Ventana_Añadir_Empleado():
 
     def __init__(self,ventana):
@@ -310,7 +315,7 @@ class Ventana_Añadir_Empleado():
         self.ventana.title("Añadir Empleado")
         self.ventana.geometry("500x500+500+100")
         self.ventana.resizable(0,0)
-        self.ventana.config(bg="blue")
+        self.ventana.config(bg="Black")
         self.ventana.iconbitmap("Adds/icon.ico")	
         self.ventana.config(bd=25)
         self.ventana.config(relief="groove")
@@ -550,7 +555,9 @@ class Ventana_Añadir_Empleado():
             Salario_total()
             escribir()
             return True
-
+    """
+    def volver(self): Esta funcion cierra la ventana actual y abre la ventana principal
+    """
     def volver(self):
         self.ventana.destroy()
         self.ventana = Aplicacion()
@@ -570,7 +577,7 @@ class Ventana_Jefe():
         self.ventana.geometry("500x500+500+100")
         self.ventana.title("Jefe")
         self.ventana.resizable(0,0)
-        self.ventana.config(bg="blue")
+        self.ventana.config(bg="Black")
         self.ventana.iconbitmap("Adds/icon.ico")
         self.ventana.config(bd=25)
         self.ventana.config(relief="groove")
@@ -630,7 +637,7 @@ class Ventana_Jefe():
     """	
     def Volver(self):
         self.ventana.destroy()
-        self.Ventana = Aplicacion()
+        self.ventana = Aplicacion()
 
 """
 class Ventana_Empleado(): Esta clase abre una ventana donde estaran los botones para abrir las otras ventanas disponibles 
@@ -646,7 +653,7 @@ class Ventana_Empleado():
         self.ventana.geometry("500x500+500+100")
         self.ventana.title("Ventana Principal")
         self.ventana.resizable(0,0)
-        self.ventana.config(bg="blue")
+        self.ventana.config(bg="Black")
         self.ventana.iconbitmap("Adds/icon.ico")
         self.ventana.config(bd=25)
         self.ventana.config(relief="groove")
@@ -658,16 +665,13 @@ class Ventana_Empleado():
         #Creacion de los botones, labels y entrys
 
         self.boton1 = Button(self.ventana, text="Calcular Salario", font=("Arial", 15), command=self.Verificar_Monto)
-        self.boton1.place(x=200, y=100)
-
-        self.boton2 = Button(self.ventana, text="Salir", font=("Arial", 15), command=self.ventana.destroy)
-        self.boton2.place(x=250, y=400)
+        self.boton1.place(x=150, y=100)
 
         self.boton3 = Button(self.ventana, text="Añadir Empleado", font=("Arial", 15), command=self.añadir_usuario)
-        self.boton3.place(x=200, y=200)
+        self.boton3.place(x=150, y=200)
 
-        self.boton4 = Button(self.ventana, text="Regresar", font=("Arial", 15), command=self.volver)
-        self.boton4.place(x=225, y=300)
+        self.boton4 = Button(self.ventana, text="Volver", font=("Arial", 15), command=self.volver)
+        self.boton4.place(x=0, y=0)
 
     """
     def Verificar_Monto(self): Esta funcion abre una ventana donde se podra calcular el salario del empleado que esta
@@ -703,7 +707,7 @@ class C_Salario():
         self.ventana.geometry("500x500+500+100")
         self.ventana.title("Calcular Salario")
         self.ventana.resizable(0,0)
-        self.ventana.config(bg="blue")
+        self.ventana.config(bg="Black")
         self.ventana.iconbitmap("Adds/icon.ico")
         self.ventana.config(bd=25)
         self.ventana.config(relief="groove")
@@ -734,7 +738,10 @@ class C_Salario():
         self.boton3.place(x=200, y=200)
 
         self.boton4 = Button(self.ventana, text="Regresar", font=("Arial", 15), command=self.volver)
-        self.boton4.place(x=200, y=250)
+        self.boton4.place(x=200, y=300)
+
+        self.boton5 = Button(self.ventana, text="Graficas", font=("Arial", 15), command=self.graficas)
+        self.boton5.place(x=200, y=250)
 
         self.label2 = Label(self.ventana, textvariable=self.mensaje, font=("Arial", 15), bg="blue", fg="white")
         self.label2.place(x=50, y=250)
@@ -780,7 +787,7 @@ class C_Salario():
         self.ventana2.config(relief="groove")
         self.ventana2.config(cursor="pirate")
 
-        self.tabla = ttk.Treeview(self.ventana2, height=10, columns=("col1", "col2", "col3", "col4", "col5", "col6"
+        self.tabla = ttk.Treeview(self.ventana2, height=30, columns=("col1", "col2", "col3", "col4", "col5", "col6"
         , "col7", "col8", "col9", "col10", "col11"))
         self.tabla.column("#0", width=100,anchor=CENTER)
         self.tabla.column("col1", width=150,anchor=CENTER)
@@ -811,11 +818,11 @@ class C_Salario():
         self.tabla.place(x=0, y=0)
         self.tabla.pack()
 
-        # Se encarga de mostrar los datos en la tabla
+        # Se encarga de mostrar los datos en la tabla, los datos de la clomna 7 y 8 solo tienen 2 decimales
         for i in lista:
             self.tabla.insert("", 0, text=i[0], values=(i[1], i[2],  i[3], i[4], i[5], i[6], 
-             str((float(i[3]) * float(i[4])) * 0.15) ,
-             str(float(i[3]) * float(i[4]) - (float(i[3]) * float(i[4])) * 0.15),i[7], i[8], i[9]))
+             str(round(float(i[3]) * float(i[4]) * 0.15, 2)) ,
+             str(round(float(i[3]) * float(i[4]) - float(i[3]) * float(i[4]) * 0.15,2)),i[7], i[8], i[9]))
 
     ############################## FUNCIONES DE HORAS EXTRA ##############################
     """
@@ -867,18 +874,21 @@ class C_Salario():
             listbox.place(x=50, y=200)
             for i in lista:
                 listbox.insert(END, i[2] + " " + i[0]+ " " + i[1])
-            listbox.bind("<<ListboxSelect>>", self.onselect2)
-            self.boton2 = Button(self.ventana1, text="Calcular", font=("Arial", 15), command=self.calcular_uno)
-            self.boton2.place(x=200, y=400)
+                #Solo se puede seleccionar un empleado de la lista
+                listbox.bind("<<ListboxSelect>>", self.onselect2)
+            self.boton4 = Button(self.ventana1, text="Calcular 1", font=("Arial", 15), command=self.calcular_uno)
+            self.boton4.place(x=200, y=300)
 
     """
     onselect2(self, event): Esta funcion se encarga de seleccionar el empleado que se va a calcular las horas extra
     """
     def onselect2(self, event):
-        w = event.widget
-        index = int(w.curselection()[0])
-        value = w.get(index)
-        self.codigo.set(value[0:4])
+        widget = event.widget
+        selection = widget.curselection()
+        picked = widget.get(selection[0])
+        lista2.append(picked[0:4])
+        print(lista2)
+
 
     """  
     def calcular_uno(self): Esta funcion se encarga de calcular las horas extra de un empleado en especifico, aqui 
@@ -886,19 +896,26 @@ class C_Salario():
     """
     def calcular_uno(self): 
         horas = self.horas.get()
-
         for i in lista:
-            if i[0] == self.codigo.get():
-                horas = float(horas)
-                if horas > 8:
-                    messagebox.showinfo("Horas Extra", 
-                    "El empleado " + i[0] + " " + i[2] + "No puede llevar mas de 8 horas extra")
-                else:
-                    i[7] = float(i[7]) + float(horas)
-                    i[7] = str(i[7])
-                    messagebox.showinfo("Horas Extra", 
-                    "El empleado " + i[0] + " " + i[2] + " tiene " + i[7] + " horas extra")
-                    self.ventana3.destroy()
+            for j in lista2:
+                if i[2] == j:
+                    horas = float(horas)
+                    if horas > 8:
+                        messagebox.showinfo("Horas Extra", 
+                        "El empleado " + i[0] + " " + i[2] + "No puede llevar mas de 8 horas extra")
+                    else:
+                        i[7] = float(i[7]) + float(horas)
+                        i[7] = str(i[7])
+                        messagebox.showinfo("Horas Extra", 
+                        "El empleado " + i[0] + " " + i[2] + " tiene " + i[7] + " horas extra")
+                        ventana = C_Salario(self.ventana)
+                        lista2.clear()
+                        print(lista2)
+                        print("listo")
+                        self.ventana1.destroy()
+
+                
+
 
     ############################# Boton 2 #############################
     """
@@ -930,6 +947,11 @@ class C_Salario():
 
             self.boton1 = Button(self.ventana2, text="Calcular", font=("Arial", 15), command=self.calcular_todo_horas2)
             self.boton1.place(x=200, y=100)
+
+            mensaje = StringVar()
+            mensaje.set(" ")
+            self.label2 = Label(self.ventana2, textvariable=self.mensaje, font=("Arial", 15), bg="blue", fg="white")
+            self.label2.place(x=50, y=150)
     
     """
     def calcular_todo_horas2(self): Esta funcion se encarga de calcular el salario de todos los empleados
@@ -941,7 +963,6 @@ class C_Salario():
             i[7] = self.total
             escribir()
             self.mensaje.set("Suma Hecha Satisfactoriamente")
-            messagebox.showinfo("Salario", "Correcro")
             self.total = 0
 
     ############################# Boton 3 #############################
@@ -1026,8 +1047,6 @@ class C_Salario():
                     i[7] = self.total
                     escribir()
                     self.mensaje.set("Suma Hecha Satisfactoriamente")
-                    messagebox.showinfo("Suma Hecha Satisfactoriamente", 
-                    "Se ha sumado " + str(horas) + " a las horas extra de " + i[0] + " " + i[1])
                     self.total = 0
                     ventana = C_Salario(self.ventana)
         lista2.clear()
@@ -1036,6 +1055,203 @@ class C_Salario():
     def volver(self):
         #self.ventana.destroy()
         self.ventana = Ventana_Jefe(self.ventana)
+
+    ############################# Boton 5 #############################
+    """
+    def graficas(self): Esta funcion se encarga de mostrar las graficas de los empleados, de las horas extra
+    de los empleados, de los salarios de los empleados, de los salarios de los empleados con las horas extra
+    y de los salarios de los empleados sin las horas extra tambien del genero de los empleados
+    """
+    def graficas(self):
+        self.ventana4 = Toplevel()
+        self.ventana4.geometry("500x500+500+100")
+        self.ventana4.title("Graficas")
+        self.ventana4.resizable(0,0)
+        self.ventana4.config(bg="blue")
+        self.ventana4.iconbitmap("Adds/icon.ico")
+        self.ventana4.config(bd=25)
+        self.ventana4.config(relief="groove")
+        self.ventana4.config(cursor="pirate")
+        self.ventana4.config(bd=25)
+        self.ventana4.config(relief="groove")
+        self.ventana4.config(cursor="pirate")
+
+        self.boton1 = Button(self.ventana4, text="Horas Semana", font=("Arial", 15), command=self.grafica1)
+        self.boton1.place(x=50, y=100)
+
+        self.boton2 = Button(self.ventana4, text="Edad", font=("Arial", 15), command=self.grafica2)
+        self.boton2.place(x=50, y=150)
+
+        self.boton3 = Button(self.ventana4, text="Horas Extra", font=("Arial", 15), command=self.grafica3)
+        self.boton3.place(x=50, y=200)
+
+        self.boton4 = Button(self.ventana4, text="Salario Total", font=("Arial", 15), command=self.grafica4)
+        self.boton4.place(x=50, y=250)
+
+        self.boton5 = Button(self.ventana4, text="Genero", font=("Arial", 15), command=self.grafica5)
+        self.boton5.place(x=50, y=300)
+
+        self.boton6 = Button(self.ventana4, text="Volver", font=("Arial", 15), command=self.volver2)
+        self.boton6.place(x=50, y=350)
+
+    ############################# Boton 6  de las graficas#############################
+    def volver2(self):
+        self.ventana4.destroy()
+        self.ventana = C_Salario(self.ventana)
+
+    ############################# Grafica 1 #############################
+    """
+    def grafica1(self): Esta funcion se encarga de mostrar la grafica de las horas extra de los empleados
+    en 5 tipos de horas extra: 0-5, 6-10, 11-15, 16-20, 21-25
+    """
+    def grafica1(self):
+        self.CeroCinco = 0
+        self.SeisDiez = 0
+        self.OnceQuince = 0
+        self.DieciseisVeinte = 0
+        self.VeintiunoVeinticinco = 0
+        for i in lista:
+            if float(i[4]) < 6.0:
+                self.CeroCinco += 1
+            elif float(i[4]) < 11.0:
+                self.SeisDiez += 1
+            elif float(i[4]) < 16.0:
+                self.OnceQuince += 1
+            elif float(i[4]) < 21.0:
+                self.DieciseisVeinte += 1
+            else:
+                self.VeintiunoVeinticinco += 1
+        
+        self.x = ["0-5", "6-10", "11-15", "16-20", "21-25"]
+        self.y = [self.CeroCinco, self.SeisDiez, self.OnceQuince, self.DieciseisVeinte, self.VeintiunoVeinticinco]
+        plt.bar(self.x, self.y, color="blue")
+        plt.title("Horas ")
+        plt.xlabel("Horas ")
+        plt.ylabel("Cantidad de Empleados")
+        plt.show()
+
+    ############################# Grafica 2 #############################
+    """
+    def grafica2(self): Esta funcion se encarga de mostrar la grafica en cuanto a la edad de los empleados
+    en 5 tipos de edades: 18-25, 26-35, 36-45, 46-55, 56-65
+    """
+    def grafica2(self):
+        self.DieciochoVeinticinco = 0
+        self.VeintiseisTreintaCinco = 0
+        self.TreintaSeisCuarentaCinco = 0
+        self.CuarentaSeisCincuentaCinco = 0
+        self.CincuentaSeisSesentaCinco = 0
+        for i in lista:
+            if int(i[6]) < 26:
+                self.DieciochoVeinticinco += 1
+            elif int(i[6]) < 36:
+                self.VeintiseisTreintaCinco += 1
+            elif int(i[6]) < 46:
+                self.TreintaSeisCuarentaCinco += 1
+            elif int(i[6]) < 56:
+                self.CuarentaSeisCincuentaCinco += 1
+            elif int(i[6]) < 66:
+                self.CincuentaSeisSesentaCinco += 1
+        #Logica de la grafica usando matplotlib
+        self.x = ["18-25", "26-35", "36-45", "46-55", "56-65"]
+        self.y = [self.DieciochoVeinticinco, self.VeintiseisTreintaCinco, 
+            self.TreintaSeisCuarentaCinco, self.CuarentaSeisCincuentaCinco, self.CincuentaSeisSesentaCinco]
+        plt.bar(self.x, self.y, color="blue")
+        plt.title("Grafica de Edad")
+        plt.xlabel("Edad")
+        plt.ylabel("Cantidad de Empleados")
+        plt.show()
+
+    
+    ############################# Grafica 3 #############################
+    """
+    def grafica3(self): Esta funcion se encarga de mostrar la grafica de la cantidad de horas extra de los empleados
+    por promedio en 5 tipos en cuanto a horas extra: 0-5, 6-10, 11-15, 16-20, 21-25
+    """
+    def grafica3(self):
+        #Logica de la grafica usando matplotlib
+        self.CeroCinco = 0
+        self.SeisDiez = 0
+        self.OnceQuince = 0
+        self.DieciseisVeinte = 0
+        self.VeintiunoVeinticinco = 0
+        for i in lista:
+            if float(i[7]) < 5.0:
+                self.CeroCinco += 1
+            elif float(i[7]) < 10.0:
+                self.SeisDiez += 1
+            elif float(i[7]) < 15.0:
+                self.OnceQuince += 1
+            elif float(i[7]) < 20.0:
+                self.DieciseisVeinte += 1
+            elif float(i[7]) < 25.0:
+                self.VeintiunoVeinticinco += 1
+
+        self.x = ["0-5", "6-10", "11-15", "16-20", "21-25"]
+        self.y = [self.CeroCinco, self.SeisDiez, self.OnceQuince, self.DieciseisVeinte, self.VeintiunoVeinticinco]
+        plt.bar(self.x, self.y, color="blue")
+        plt.title("Grafica de Horas Extra")
+        plt.xlabel("Horas Extra")
+        plt.ylabel("Empleados")
+        plt.show()
+
+    ############################# Grafica 4 #############################
+    """
+    def grafica4(self): Esta funcion se encarga de mostrar la grafica de los salarios de los empleados 
+    en promedio de los empleados, en cuatro tipos: el primero es el salario de los empleados que ganan menos de 1000,
+    el segundo es el salario de los empleados que ganan entre 1000 y 2000, el tercero es el salario de los empleados
+    que ganan entre 2000 y 3000 y el cuarto es el salario de los empleados que ganan mas de 3000
+    """
+    def grafica4(self):
+        self.menos1000 = 0
+        self.entre1000y2000 = 0
+        self.entre2000y3000 = 0
+        self.mas3000 = 0
+        for i in lista:
+            if float(i[9]) < 1000:
+                self.menos1000 += 1
+            elif float(i[9]) >= 1000 and float(i[9]) < 2000:
+                self.entre1000y2000 += 1
+            elif float(i[9]) >= 2000 and float(i[9]) < 3000:
+                self.entre2000y3000 += 1
+            elif float(i[9]) >= 3000:
+                self.mas3000 += 1
+
+        self.x = ["Menos de 1000", "Entre 1000 y 2000", "Entre 2000 y 3000", "Mas de 3000"]
+        self.y = [self.menos1000, self.entre1000y2000, self.entre2000y3000, self.mas3000]
+        plt.bar(self.x, self.y, color="blue")
+        plt.title("Grafica de Salario sin Horas Extra")
+        plt.xlabel("Salario")
+        plt.ylabel("Empleados")
+        plt.show()
+
+    ############################# Grafica 5 #############################
+    """
+    def grafica5(self): Esta funcion se encarga de mostrar la grafica de los generos de los empleados
+    la grafica sera circular,los datos se mostraran en porcentajes y son strings para eso contara cuantos
+    hombres ,otros y mujeres hay y los convertira en porcentajes de cuantos hay de cada uno
+    """
+    def grafica5(self):
+        #Logica de la grafica usando matplotlib
+        self.h = 0
+        self.m = 0
+        self.o = 0
+        for i in lista:
+            if i[5] == "Masculino":
+                self.h += 1
+            elif i[5] == "Femenino":
+                self.m += 1
+            elif i[5] == "Otro":
+                self.o += 1
+        self.total = self.h + self.m + self.o
+        self.porcentajeH = (self.h * 100) / self.total
+        self.porcentajeM = (self.m * 100) / self.total
+        self.porcentajeO = (self.o * 100) / self.total
+        self.porcentajes = [self.porcentajeH, self.porcentajeM, self.porcentajeO]
+        self.nombres = ["Hombres", "Mujeres", "Otros"]
+        plt.pie(self.porcentajes, labels=self.nombres, autopct="%0.1f %%")
+        plt.title("Grafica de Generos")
+        plt.show()
 
 #Calcula el salario de un empleado en especifico 
 """
@@ -1050,7 +1266,7 @@ class Salario_Empleado():
         self.ventana.geometry("500x500+500+100")
         self.ventana.title("Calcular Salario")
         self.ventana.resizable(0,0)
-        self.ventana.config(bg="blue")
+        self.ventana.config(bg="Black")
         self.ventana.iconbitmap("Adds/icon.ico")
         self.ventana.config(bd=25)
         self.ventana.config(relief="groove")
@@ -1098,15 +1314,18 @@ class Salario_Empleado():
                 if codigo == i[2]:
                     messagebox.showinfo("Salario", "El salario de " + i[0] + " " + i[1] +
                     " es de " +  str(float(i[9])))
+                    self.codigo.set("")
                     return True
             self.mensaje.set("El codigo no existe")
             messagebox.showerror("Error", "El codigo no existe")
+            self.codigo.set("")
             return False
     
     ######### Boton 2 #########
 
     """	
-    def liquidacion(self): Esta funcion se encarga de calcular la liquidacion de un empleado en especifico
+    def liquidacion(self): Esta funcion se encarga de calcular la liquidacion de un empleado en especifico,
+    dependiendo de la fecha de ingreso del empleado se le sumara un monto extra a su salario
     """
     def liquidacion(self):
         codigo = self.codigo.get()
@@ -1122,21 +1341,28 @@ class Salario_Empleado():
                 diferencia = diferencia/30
 
                 if diferencia > 9:
-                    i.append(str(float(i[4])*float(i[3])+3500))
+                    i.append(str(float(i[9])+3500))
                     self.mensaje.set("Se calculo el salario total del empleado")
                     messagebox.showinfo("Liquidacion", "El salario total del empleado es: "+str(i[9]))
+                    self.codigo.set("")
+
                 elif diferencia > 6:
-                    i.append(str(float(i[4])*float(i[3])+2500))
+                    i.append(str(float(i[9])+2500))
                     self.mensaje.set("Se calculo el salario total del empleado")
                     messagebox.showinfo("Liquidacion", "El salario total del empleado es: "+str(i[9]))
+                    self.codigo.set("")
+
                 elif diferencia > 3:
-                    i.append(str(float(i[4])*float(i[3])+1500))
+                    i.append(str(float(i[9])+1500))
                     self.mensaje.set("Se calculo el salario total del empleado")
                     messagebox.showinfo("Liquidacion", "El salario total del empleado es: "+str(i[9]))
+                    self.codigo.set("")
+
                 else:
-                    i.append(str(float(i[4])*float(i[3])+500))
+                    i.append(str(float(i[9])+500))
                     self.mensaje.set("Se calculo el salario total del empleado")
                     messagebox.showinfo("Liquidacion", "El salario total del empleado es: "+str(i[9]))
+                    self.codigo.set("")
                 return True
     
     ######### Boton 3 #########
@@ -1155,7 +1381,7 @@ class Ventana_Ordenar():
         self.ventana.geometry("500x500+500+100")
         self.ventana.title("Ordenar")
         self.ventana.resizable(0,0)
-        self.ventana.config(bg="blue")
+        self.ventana.config(bg="Black")
         self.ventana.iconbitmap("Adds/icon.ico")
         self.ventana.config(bd=25)
         self.ventana.config(relief="groove")
@@ -1175,7 +1401,7 @@ class Ventana_Ordenar():
 
         self.combobox1 = ttk.Combobox(self.ventana, textvariable=self.orden, state="readonly")
         self.combobox1["values"] = ("Nombre", "Apellido","Codigo", "Sueldo","Horas por Semana", "Sexo", "Edad"
-        , "Horas Extras", "Fecha de Ingreso","Sub Total", "Salario Total")
+        , "Horas Extras", "Fecha de Ingreso", "Salario Total")
         self.combobox1.place(x=200, y=50)
 
         self.boton1 = Button(self.ventana, text="Ordenar", font=("Arial", 15), command=self.ordenar)
@@ -1191,6 +1417,9 @@ class Ventana_Ordenar():
         self.boton2 = Button(self.ventana, text="Ver Tabla", font=("Arial", 15), command=self.ver_tabla)
         self.boton2.place(x=200, y=400)
 
+        self.boton3 = Button(self.ventana, text="Volver", font=("Arial", 15), command=self.volver)
+        self.boton3.place(x=350, y=400)
+
     ######### Boton 1 #########
 
     """
@@ -1204,46 +1433,60 @@ class Ventana_Ordenar():
 
         if orden == "Nombre":
             lista.sort(key=lambda lista: lista[0])
+            #se le da la vuelta a la lista para que quede de mayor a menor
+            lista.reverse()
             self.mensaje.set("Se ordeno por nombre")
 
         elif orden == "Apellido":
             lista.sort(key=lambda lista: lista[1])
+            #se le da la vuelta a la lista para que quede de mayor a menor
+            lista.reverse()
             self.mensaje.set("Se ordeno por apellido")
 
         elif orden == "Codigo":
             lista.sort(key=lambda lista: lista[2])
+            #se le da la vuelta a la lista para que quede de mayor a menor
+            lista.reverse()
             self.mensaje.set("Se ordeno por codigo")
 
         elif orden == "Sueldo":
-            lista.sort(key=lambda lista: lista[3])
+            lista.sort(key=lambda lista: float(lista[3]))
+            #se le da la vuelta a la lista para que quede de mayor a menor
+            lista.reverse()
             self.mensaje.set("Se ordeno por sueldo")
 
         elif orden == "Horas por Semana":
-            lista.sort(key=lambda lista: lista[4])
+            lista.sort(key=lambda lista: float(lista[4]))
+            #se le da la vuelta a la lista para que quede de mayor a menor
+            lista.reverse()
             self.mensaje.set("Se ordeno por horas por semana")
 
         elif orden == "Sexo":
             lista.sort(key=lambda lista: lista[5])
+            #se le da la vuelta a la lista para que quede de mayor a menor
+            lista.reverse()
             self.mensaje.set("Se ordeno por sexo")
 
         elif orden == "Edad":
-            lista.sort(key=lambda lista: lista[6])
+            lista.sort(key=lambda lista: Int(lista[6]))
             self.mensaje.set("Se ordeno por edad")
 
         elif orden == "Horas Extras":
-            lista.sort(key=lambda lista: lista[7])
+            lista.sort(key=lambda lista: float(lista[7]))
+            #se le da la vuelta a la lista para que quede de mayor a menor
+            lista.reverse()
             self.mensaje.set("Se ordeno por horas extras")
 
         elif orden == "Fecha de Ingreso":
             lista.sort(key=lambda lista: lista[8])
+            #se le da la vuelta a la lista para que quede de mayor a menor
+            lista.reverse()
             self.mensaje.set("Se ordeno por fecha de ingreso")
-
-        elif orden == "Sub Total":
-            lista.sort(key=lambda lista: str(float(lista[4]) * float(lista[3])-(float(lista[4])*float(lista[3]) * 0.15)))
-            self.mensaje.set("Se ordeno por salario total")
         
         elif orden == "Salario Total":
-            lista.sort(key=lambda lista: lista[9])
+            lista.sort(key=lambda lista: float(lista[9]))
+            #se le da la vuelta a la lista para que quede de mayor a menor
+            lista.reverse()
             self.mensaje.set("Se ordeno por salario total")
 
         else:
@@ -1259,6 +1502,14 @@ class Ventana_Ordenar():
 
     def ver_tabla(self):
        self.tabla = C_Salario.calcular_todo(self)
+    
+    ######### Boton 3 #########
+    """
+    def volver(self): Esta funcion se encarga de volver a la ventana principal
+    """	
+    def volver(self):
+        #self.ventana.destroy()
+        self.ventana = Ventana_Jefe(self.ventana)
 
 #Ventana Retirar Empleado
 """	
@@ -1271,7 +1522,7 @@ class Ventana_Retirar():
         self.ventana.geometry("500x500+500+100")
         self.ventana.title("Retirar")
         self.ventana.resizable(0,0)
-        self.ventana.config(bg="blue")
+        self.ventana.config(bg="Black")
         self.ventana.iconbitmap("Adds/icon.ico")
         self.ventana.config(bd=25)
         self.ventana.config(relief="groove")
@@ -1283,19 +1534,20 @@ class Ventana_Retirar():
         self.mensaje = StringVar()
         self.mensaje.set("")
 
-        self.boton1 = Button(self.ventana, text="Retirar", font=("Arial", 15), command=self.retirar)
+        self.boton1 = Button(self.ventana, text="Retirar un suario", font=("Arial", 15), command=self.retirar)
         self.boton1.place(x=200, y=100)
 
         self.label2 = Label(self.ventana, textvariable=self.mensaje, font=("Arial", 15), bg="blue", fg="white")
         self.label2.place(x=50, y=250)
-        
-        self.titulo = Label(self.ventana, text="Para ver su liquidacion \n presione el siguiente boton",
-         font=("Arial", 20), bg="black", fg="white")
-        self.titulo.place(x=75, y=250)
-
 
         self.boton2 = Button(self.ventana, text="Tu liquidacion", font=("Arial", 15), command=self.obtener_liquidacion)
         self.boton2.place(x=200, y=400)
+
+        self.boton3 = Button(self.ventana, text="Retirar Varios", font=("Arial", 15), command=self.retirarVarios)
+        self.boton3.place(x=200, y=300)
+
+        self.boton4 = Button(self.ventana, text="Volver", font=("Arial", 15), command=self.volver)
+        self.boton4.place(x=0, y=0)
 
     ######### Boton 1 #########
 
@@ -1310,29 +1562,32 @@ class Ventana_Retirar():
                 listbox.insert(END, i[2] + " " + i[0] + " " + i[1])
             listbox.bind("<<ListboxSelect>>", self.onselect2)
             self.boton2 = Button(self.ventana, text="Listo", font=("Arial", 15), command=self.retirar_aux)
-            self.boton2.place(x=300, y=100)
+            self.boton2.place(x=300, y=300)
     
     """
     def onselect2(self): Esta funcion se encarga de seleccionar el empleado que el usuario desea retirar
     """ 
-    def onselect2(self, evt):
-        w = evt.widget
-        index = int(w.curselection()[0])
-        value = w.get(index)
-        self.codigo.set(value[0:4])
+    def onselect2(self, event):
+        widget = event.widget
+        selection = widget.curselection()
+        picked = widget.get(selection[0])
+        lista2.append(picked[0:4])
+        print(lista2)
 
     """
     def retirar(self): Esta funcion se encarga de retirar un empleado de la lista y calcular su salario total
     """
     def retirar_aux(self):
-        codigo = self.codigo.get()
         for i in lista:
-            if i[2] == codigo:
-                self.calcular_liquidacion()
-                lista.remove(i)
-                self.mensaje.set("Se ha retirado al empleado")
-                self.ventana.destroy()
-                break
+            if i[2] == lista2[0]:
+                    lista.remove(i)
+                    self.mensaje.set("Se retiro el empleado")
+                    lista2.clear()
+                    print("Listo")
+                    print(lista2)
+                    break
+            else:
+                pass
         else:
             self.mensaje.set("No se encontro el empleado")
 
@@ -1360,6 +1615,46 @@ class Ventana_Retirar():
         index = int(w.curselection()[0])
         value = w.get(index)
         self.codigo.set(value[0:4])
+
+    ######### Boton 3 #########
+    """ 
+    def retirarVarios(self): Esta funcion se encarga de retirar varios empleados de la lista y calcular su salario total
+    """
+    def retirarVarios(self):
+            listbox = Listbox(self.ventana, width=50, height=10)
+            listbox.place(x=50, y=200)
+            for i in lista:
+                listbox.insert(END, i[2] + " " + i[0] + " " + i[1])
+            listbox.bind("<<ListboxSelect>>", self.onselect4)
+            self.boton2 = Button(self.ventana, text="Listo", font=("Arial", 15), command=self.retirarVarios_aux)
+            self.boton2.place(x=300, y=100)
+
+    def onselect4(self, evt):
+        w = evt.widget
+        index = int(w.curselection()[0])
+        value = w.get(index)
+        lista2.append(value[0:4])
+        print(lista2)
+
+    """
+    def retirarVarios_aux(self): Esta funcion se encarga de retirar varios empleados de la lista y 
+    calcular su salario total
+    """
+    def retirarVarios_aux(self):
+        for i in lista:
+            for j in lista2:
+                if i[2] == j:
+                        self.calcular_liquidacion()
+                        lista.remove(i)
+                        self.mensaje.set("Se retiro el empleado")
+                        ventana = self.Ventana_Retirar(self.ventana)
+                        lista2.clear()
+                
+                else:
+                    pass
+        else:
+            self.mensaje.set("No se encontro el empleado")
+
 
 
     """	
@@ -1448,6 +1743,14 @@ class Ventana_Retirar():
                     messagebox.showinfo("Liquidacion", "El salario total del empleado es: "+str(i[8]))
                     self.codigo.set("")
 
+    #########Boton 4#########
+    """
+    volver(self): Esta funcion se encarga de volver a la ventana anterior
+    """
+    def volver(self):
+        self.ventana.destroy()
+        ventana = self.Ventana_Jefe(self.ventana)
+
 #Clase de la ventana principal
 """
 class Ventana_Pricipal(): Esta clase es la que se encarga de crear la ventana principal deonde hbra dos botones
@@ -1456,20 +1759,33 @@ uno para ingresar como empleado y otro para ingresar como administrador o Jefe
 class Ventana_Pricipal():
     def __init__(self, ventana,contador):
 
-        self.contador = contador
         self.ventana = ventana
+        self.contador = contador
         self.ventana.title("Menu principal")
         self.ventana.iconbitmap("Adds/icon.ico")
         self.ventana.geometry("500x500+500+100")
-        self.ventana.config(bg="blue")
+        self.ventana.config(bg="black")
+        self.ventana.config(relief="groove")
+        self.ventana.config(cursor="pirate")
+        self.ventana.config(bd=25)
+        self.ventana.config(relief="groove")
+        self.ventana.config(cursor="pirate")
         self.boton1 = Button(self.ventana, text="Ingresar como empleado", font=("Arial", 15),
          command=self.ingresar_empleado)
-        self.boton1.place(x=150, y=100)
+        self.boton1.place(x=120, y=30)
         self.boton2 = Button(self.ventana, text="Ingresar como administrador", font=("Arial", 15),
          command=self.Contraseña)
-        self.boton2.place(x=150, y=200)
+        self.boton2.place(x=110, y=100)
+        """	
+        self.Logo1 = Imagenes("Logo 1.png",(320,280))
+        self.IMG = Label(self.ventana,image = self.Logo1)
+        self.IMG.pack()
+        self.IMG.place(x = 75, y = 150)
+        """	
 
         self.contador = 0
+
+        self.ventana.mainloop()
 
     def Contraseña(self):
         """
@@ -1479,10 +1795,20 @@ class Ventana_Pricipal():
         self.ventana = Tk()
         self.ventana.iconbitmap("Adds/icon.ico")
         self.ventana.title("Contraseña")
-        self.ventana.geometry("500x500+500+100")
-        self.ventana.config(bg="blue")
-
-        self.label1 = Label(self.ventana, text="Contraseña", font=("Arial", 15), bg="blue", fg="white")
+        self.ventana.geometry("500x200+500+100")
+        self.ventana.config(bg="Black")
+        self.ventana.config(relief="groove")
+        self.ventana.config(cursor="pirate")
+        self.ventana.config(bd=25)
+        self.ventana.config(relief="groove")
+        self.ventana.config(cursor="pirate")
+        """
+        self.Logo2 = Imagenes("One Piece.png",(320,280))
+        self.IMG1 = Label(self.ventana,image = self.Logo2)
+        self.IMG1.pack()
+        self.IMG1.place(x = 75, y = 150)
+        """	
+        self.label1 = Label(self.ventana, text="Contraseña", font=("Arial", 15), bg="salmon4", fg="white")
         self.label1.place(x=50, y=50)
 
         self.contraseña = StringVar()
@@ -1493,7 +1819,7 @@ class Ventana_Pricipal():
         self.entrada1.place(x=200, y=50)
 
         self.boton1 = Button(self.ventana, text="Ingresar", font=("Arial", 15), command=self.ingresar_administrador)
-        self.boton1.place(x=200, y=150)
+        self.boton1.place(x=250, y=100)
 
         self.boton2 = Button(self.ventana, text="Volver", font=("Arial", 15), command=self.Volver)
         self.boton2.place(x=0, y=0)
@@ -1503,13 +1829,16 @@ class Ventana_Pricipal():
     llama a la clase Ventana_Jefe
     """
     def ingresar_administrador(self):
+
         contraseña = self.contraseña.get()
+        
         if contraseña == "One Piece":
             self.llamar()
         else:
             messagebox.showerror("Error", "Contraseña incorrecta")
             contraseña = self.contraseña.set("")
             self.contador += 1
+
             if self.contador == 3:
                 messagebox.showerror("Error", "Ha ingresado mal la contraseña 3 veces, el programa se cerrara")
                 self.ventana.destroy()
@@ -1555,6 +1884,7 @@ Resetear_H_E()
 actualizar()
 Excel()
 aplicacion = Aplicacion()
+
 
 
 
