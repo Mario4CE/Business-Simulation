@@ -728,23 +728,23 @@ class C_Salario():
         self.entrada1 = Entry(self.ventana, textvariable=self.codigo, font=("Arial", 15))
         self.entrada1.place(x=150, y=50)
 
-        self.boton1 = Button(self.ventana, text="Calcular Salario Especifico", font=("Arial", 15), command=self.calcular)
-        self.boton1.place(x=200, y=100)
+        self.boton1 = Button(self.ventana, text="Salario Especifico", font=("Arial", 15), command=self.calcular)
+        self.boton1.place(x=175, y=100)
 
         self.boton2 = Button(self.ventana, text="Calcular Todos", font=("Arial", 15), command=self.calcular_todo)
-        self.boton2.place(x=200, y=150)
+        self.boton2.place(x=190, y=150)
 
         self.boton3 = Button(self.ventana, text="Horas Extra", font=("Arial", 15), command=self.horas_extra)
-        self.boton3.place(x=200, y=200)
+        self.boton3.place(x=190, y=200)
 
-        self.boton4 = Button(self.ventana, text="Regresar", font=("Arial", 15), command=self.volver)
-        self.boton4.place(x=200, y=300)
+        self.boton4 = Button(self.ventana, text="Volver", font=("Arial", 15), command=self.volver)
+        self.boton4.place(x=0, y=0)
 
         self.boton5 = Button(self.ventana, text="Graficas", font=("Arial", 15), command=self.graficas)
         self.boton5.place(x=200, y=250)
 
         self.label2 = Label(self.ventana, textvariable=self.mensaje, font=("Arial", 15), bg="blue", fg="white")
-        self.label2.place(x=50, y=250)
+        self.label2.place(x=50, y=350)
     
     ############################## FUNCIONES INDEPENDIENTES A LAS HORAS EXTRA ##############################
     """
@@ -1298,7 +1298,7 @@ class Salario_Empleado():
         self.label2.place(x=50, y=250)
 
         self.boton3 = Button(self.ventana, text="Volver", font=("Arial", 15), command=self.volver)
-        self.boton3.place(x=200, y=300)
+        self.boton3.place(x=0, y=0)
 
     ######### Boton 1 #########
     """
@@ -1341,27 +1341,23 @@ class Salario_Empleado():
                 diferencia = diferencia/30
 
                 if diferencia > 9:
-                    i.append(str(float(i[9])+3500))
                     self.mensaje.set("Se calculo el salario total del empleado")
-                    messagebox.showinfo("Liquidacion", "El salario total del empleado es: "+str(i[9]))
+                    messagebox.showinfo("Liquidacion", "El salario total del empleado es: " + str(float(i[9])+3500))
                     self.codigo.set("")
 
                 elif diferencia > 6:
-                    i.append(str(float(i[9])+2500))
                     self.mensaje.set("Se calculo el salario total del empleado")
-                    messagebox.showinfo("Liquidacion", "El salario total del empleado es: "+str(i[9]))
+                    messagebox.showinfo("Liquidacion", "El salario total del empleado es: " + str(float(i[9])+2500))
                     self.codigo.set("")
 
                 elif diferencia > 3:
-                    i.append(str(float(i[9])+1500))
                     self.mensaje.set("Se calculo el salario total del empleado")
-                    messagebox.showinfo("Liquidacion", "El salario total del empleado es: "+str(i[9]))
+                    messagebox.showinfo("Liquidacion", "El salario total del empleado es: " + str(float(i[9])+1500))
                     self.codigo.set("")
 
                 else:
-                    i.append(str(float(i[9])+500))
                     self.mensaje.set("Se calculo el salario total del empleado")
-                    messagebox.showinfo("Liquidacion", "El salario total del empleado es: "+str(i[9]))
+                    messagebox.showinfo("Liquidacion", "El salario total del empleado es: " + str(float(i[9])+500))
                     self.codigo.set("")
                 return True
     
@@ -1418,7 +1414,7 @@ class Ventana_Ordenar():
         self.boton2.place(x=200, y=400)
 
         self.boton3 = Button(self.ventana, text="Volver", font=("Arial", 15), command=self.volver)
-        self.boton3.place(x=350, y=400)
+        self.boton3.place(x=0, y=0)
 
     ######### Boton 1 #########
 
@@ -1793,6 +1789,7 @@ class Ventana_Pricipal():
         """
         self.ventana.destroy()
         self.ventana = Tk()
+        self.ventana.update()
         self.ventana.iconbitmap("Adds/icon.ico")
         self.ventana.title("Contraseña")
         self.ventana.geometry("500x200+500+100")
@@ -1830,17 +1827,23 @@ class Ventana_Pricipal():
     """
     def ingresar_administrador(self):
 
+        self.ventana.update()
+
         contraseña = self.contraseña.get()
         
         if contraseña == "One Piece":
+            self.contador = 0
+            contraseña = self.contraseña.set(" ")
             self.llamar()
+
         else:
             messagebox.showerror("Error", "Contraseña incorrecta")
-            contraseña = self.contraseña.set("")
+            contraseña = self.contraseña.set(" ")
             self.contador += 1
 
             if self.contador == 3:
                 messagebox.showerror("Error", "Ha ingresado mal la contraseña 3 veces, el programa se cerrara")
+                contraseña = self.contraseña.set(" ")
                 self.ventana.destroy()
 
             else:
@@ -1884,8 +1887,3 @@ Resetear_H_E()
 actualizar()
 Excel()
 aplicacion = Aplicacion()
-
-
-
-
-    
