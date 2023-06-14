@@ -315,7 +315,7 @@ class Ventana_Añadir_Empleado():
         self.ventana.title("Añadir Empleado")
         self.ventana.geometry("500x500+500+100")
         self.ventana.resizable(0,0)
-        self.ventana.config(bg="Black")
+        self.ventana.config(bg="DodgerBlue4")
         self.ventana.iconbitmap("Adds/icon.ico")	
         self.ventana.config(bd=25)
         self.ventana.config(relief="groove")
@@ -345,43 +345,43 @@ class Ventana_Añadir_Empleado():
     """
     def crearWidgets(self):
 
-        self.botonVolver = Button(self.ventana, text="Volver", font=("Arial", 15), command=self.volver)
+        self.botonVolver = Button(self.ventana, text="Volver", font=("Arial", 15),bg="DodgerBlue4", command=self.volver)
         self.botonVolver.place(x=375, y=410)
 
-        self.titulo = Label(self.ventana, text="Empresa", font=("Arial", 20), bg="blue", fg="white")
+        self.titulo = Label(self.ventana, text="Empresa", font=("Arial", 20), bg="DodgerBlue4", fg="white")
         self.titulo.place(x=200, y=10)
 
-        self.nombreLabel = Label(self.ventana, text="Nombre: ", font=("Arial", 15), bg="blue", fg="white")
+        self.nombreLabel = Label(self.ventana, text="Nombre: ", font=("Arial", 15), bg="DodgerBlue4", fg="white")
         self.nombreLabel.place(x=10, y=50)
         self.nombreEntry = Entry(self.ventana, textvariable=self.nombre, font=("Arial", 15))
         self.nombreEntry.place(x=100, y=50)
 
-        self.apellidoLabel = Label(self.ventana, text="Apellido: ", font=("Arial", 15), bg="blue", fg="white")
+        self.apellidoLabel = Label(self.ventana, text="Apellido: ", font=("Arial", 15), bg="DodgerBlue4", fg="white")
         self.apellidoLabel.place(x=10, y=100)
         self.apellidoEntry = Entry(self.ventana, textvariable=self.apellido, font=("Arial", 15))
         self.apellidoEntry.place(x=100, y=100)
 
-        self.codigoLabel = Label(self.ventana, text="Codigo: ", font=("Arial", 15), bg="blue", fg="white")
+        self.codigoLabel = Label(self.ventana, text="Codigo: ", font=("Arial", 15),bg="DodgerBlue4", fg="white")
         self.codigoLabel.place(x=10, y=150)
         self.codigoEntry = Entry(self.ventana, textvariable=self.codigo, font=("Arial", 15))
         self.codigoEntry.place(x=100, y=150)
 
-        self.sueldoLabel = Label(self.ventana, text="Sueldo: ", font=("Arial", 15), bg="blue", fg="white")
+        self.sueldoLabel = Label(self.ventana, text="Sueldo: ", font=("Arial", 15), bg="DodgerBlue4", fg="white")
         self.sueldoLabel.place(x=10, y=200)
         self.sueldoEntry = Entry(self.ventana, textvariable=self.sueldo, font=("Arial", 15))
         self.sueldoEntry.place(x=100, y=200)
 
-        self.horasLabel = Label(self.ventana, text="Horas/S: ", font=("Arial", 15), bg="blue", fg="white")
+        self.horasLabel = Label(self.ventana, text="Horas/S: ", font=("Arial", 15), bg="DodgerBlue4", fg="white")
         self.horasLabel.place(x=10, y=250)
         self.horasEntry = Entry(self.ventana, textvariable=self.horas, font=("Arial", 15))
         self.horasEntry.place(x=100, y=250)
 
-        self.edadLabel = Label(self.ventana, text="Edad: ", font=("Arial", 15), bg="blue", fg="white")
+        self.edadLabel = Label(self.ventana, text="Edad: ", font=("Arial", 15), bg="DodgerBlue4", fg="white")
         self.edadLabel.place(x=10, y=300)
         self.edadEntry = Entry(self.ventana, textvariable=self.edad, font=("Arial", 15))
         self.edadEntry.place(x=100, y=300)
 
-        self.sexoLabel = Label(self.ventana, text="Sexo: ", font=("Arial", 15), bg="blue", fg="white")
+        self.sexoLabel = Label(self.ventana, text="Sexo: ", font=("Arial", 15),bg="DodgerBlue4", fg="white")
         self.sexoLabel.place(x=10, y=350)
         self.opcion_masculino = Radiobutton(self.ventana, text="Masculino", variable=self.sexo, value=1)
         self.opcion_femenino = Radiobutton(self.ventana, text="Femenino", variable=self.sexo, value=2)
@@ -391,10 +391,10 @@ class Ventana_Añadir_Empleado():
         self.opcion_femenino.place(x=200, y=350)
         self.opcion_otro.place(x=300, y=350)
 
-        self.mensajeLabel = Label(self.ventana, textvariable=self.mensaje, font=("Arial", 15), bg="blue", fg="white")
+        self.mensajeLabel = Label(self.ventana, textvariable=self.mensaje, font=("Arial", 15), bg="DodgerBlue4", fg="white")
         self.mensajeLabel.place(x=10, y=400)
 
-        self.boton = Button(self.ventana, text="Enviar", font=("Arial", 15), command=self.enviar)
+        self.boton = Button(self.ventana, text="Enviar", font=("Arial", 15),bg="DodgerBlue4", command=self.enviar)
         self.boton.place(x=200, y=400)
 
     """
@@ -577,7 +577,7 @@ class Ventana_Jefe():
         self.ventana.geometry("500x500+500+100")
         self.ventana.title("Jefe")
         self.ventana.resizable(0,0)
-        self.ventana.config(bg="Black")
+        self.ventana.config(bg="DodgerBlue4")
         self.ventana.iconbitmap("Adds/icon.ico")
         self.ventana.config(bd=25)
         self.ventana.config(relief="groove")
@@ -588,22 +588,24 @@ class Ventana_Jefe():
 
         #Creacion de los botones, labels y entrys
 
-        self.boton1 = Button(self.ventana, text="Añadir Usuario", font=("Arial", 15), command=self.añadir_usuario)
-        self.boton1.place(x=200, y=100)
+        self.boton1 = Button(self.ventana, text="Añadir Usuario", font=("Arial", 15),bg="DodgerBlue4",
+         command=self.añadir_usuario)
+        self.boton1.place(x=190, y= 175)
 
-        self.boton2 = Button(self.ventana, text="Calcular Salario", font=("Arial", 15), command=self.Verificar_Monto)
-        self.boton2.place(x=200, y=200)
+        self.boton2 = Button(self.ventana, text="Calcular Salario", font=("Arial", 15), bg="DodgerBlue4",
+        command=self.Verificar_Monto)
+        self.boton2.place(x=180, y= 275)
 
-        self.boton3 = Button(self.ventana, text="Ordenar por", font=("Arial", 15), command=self.Ordenar)
-        self.boton3.place(x=200, y=300)
+        self.boton3 = Button(self.ventana, text="Ordenar por", font=("Arial", 15), bg="DodgerBlue4",
+        command=self.Ordenar)
+        self.boton3.place(x=190, y=75)
 
-        self.boton4 = Button(self.ventana, text="Salir", font=("Arial", 15), command=self.ventana.destroy)
-        self.boton4.place(x=200, y=500)
+        self.boton5 = Button(self.ventana, text="Retirar Empleado", font=("Arial", 15),bg="DodgerBlue4",
+         command=self.Retirar)
+        self.boton5.place(x=180, y=375)
 
-        self.boton5 = Button(self.ventana, text="Retirar Empleado", font=("Arial", 15), command=self.Retirar)
-        self.boton5.place(x=200, y=400)
-
-        self.boton6 = Button(self.ventana, text="Volver", font=("Arial", 15), command=self.Volver)
+        self.boton6 = Button(self.ventana, text="Volver", font=("Arial", 15), bg="DodgerBlue4",
+        command=self.Volver)
         self.boton6.place(x=0, y=0)
 
     """
@@ -653,7 +655,7 @@ class Ventana_Empleado():
         self.ventana.geometry("500x500+500+100")
         self.ventana.title("Ventana Principal")
         self.ventana.resizable(0,0)
-        self.ventana.config(bg="Black")
+        self.ventana.config(bg="DodgerBlue4")
         self.ventana.iconbitmap("Adds/icon.ico")
         self.ventana.config(bd=25)
         self.ventana.config(relief="groove")
@@ -664,13 +666,16 @@ class Ventana_Empleado():
 
         #Creacion de los botones, labels y entrys
 
-        self.boton1 = Button(self.ventana, text="Calcular Salario", font=("Arial", 15), command=self.Verificar_Monto)
+        self.boton1 = Button(self.ventana, text="Calcular Salario", font=("Arial", 15),bg="DodgerBlue4",
+         command=self.Verificar_Monto)
         self.boton1.place(x=150, y=100)
 
-        self.boton3 = Button(self.ventana, text="Añadir Empleado", font=("Arial", 15), command=self.añadir_usuario)
+        self.boton3 = Button(self.ventana, text="Añadir Empleado", font=("Arial", 15),bg="DodgerBlue4",
+         command=self.añadir_usuario)
         self.boton3.place(x=150, y=200)
 
-        self.boton4 = Button(self.ventana, text="Volver", font=("Arial", 15), command=self.volver)
+        self.boton4 = Button(self.ventana, text="Volver", font=("Arial", 15), bg="DodgerBlue4",
+        command=self.volver)
         self.boton4.place(x=0, y=0)
 
     """
@@ -707,7 +712,7 @@ class C_Salario():
         self.ventana.geometry("500x500+500+100")
         self.ventana.title("Calcular Salario")
         self.ventana.resizable(0,0)
-        self.ventana.config(bg="Black")
+        self.ventana.config(bg="DodgerBlue4")
         self.ventana.iconbitmap("Adds/icon.ico")
         self.ventana.config(bd=25)
         self.ventana.config(relief="groove")
@@ -722,28 +727,33 @@ class C_Salario():
 
         #Creacion de los botones, labels y entrys
 
-        self.label1 = Label(self.ventana, text="Codigo", font=("Arial", 15), bg="blue", fg="white")
+        self.label1 = Label(self.ventana, text="Codigo", font=("Arial", 15), bg="DodgerBlue4", fg="white")
         self.label1.place(x=50, y=50)
 
-        self.entrada1 = Entry(self.ventana, textvariable=self.codigo, font=("Arial", 15))
+        self.entrada1 = Entry(self.ventana, textvariable=self.codigo, font=("Arial", 15),bg="DodgerBlue4")
         self.entrada1.place(x=150, y=50)
 
-        self.boton1 = Button(self.ventana, text="Salario Especifico", font=("Arial", 15), command=self.calcular)
+        self.boton1 = Button(self.ventana, text="Salario Especifico", font=("Arial", 15), bg="DodgerBlue4",
+        command=self.calcular)
         self.boton1.place(x=175, y=100)
 
-        self.boton2 = Button(self.ventana, text="Calcular Todos", font=("Arial", 15), command=self.calcular_todo)
+        self.boton2 = Button(self.ventana, text="Calcular Todos", font=("Arial", 15), bg="DodgerBlue4",
+        command=self.calcular_todo)
         self.boton2.place(x=190, y=150)
 
-        self.boton3 = Button(self.ventana, text="Horas Extra", font=("Arial", 15), command=self.horas_extra)
+        self.boton3 = Button(self.ventana, text="Horas Extra", font=("Arial", 15),bg="DodgerBlue4",
+         command=self.horas_extra)
         self.boton3.place(x=190, y=200)
 
-        self.boton4 = Button(self.ventana, text="Volver", font=("Arial", 15), command=self.volver)
+        self.boton4 = Button(self.ventana, text="Volver", font=("Arial", 15), bg="DodgerBlue4",
+        command=self.volver)
         self.boton4.place(x=0, y=0)
 
-        self.boton5 = Button(self.ventana, text="Graficas", font=("Arial", 15), command=self.graficas)
+        self.boton5 = Button(self.ventana, text="Graficas", font=("Arial", 15), bg="DodgerBlue4",
+        command=self.graficas)
         self.boton5.place(x=200, y=250)
 
-        self.label2 = Label(self.ventana, textvariable=self.mensaje, font=("Arial", 15), bg="blue", fg="white")
+        self.label2 = Label(self.ventana, textvariable=self.mensaje, font=("Arial", 15),bg="DodgerBlue4", fg="white")
         self.label2.place(x=50, y=350)
     
     ############################## FUNCIONES INDEPENDIENTES A LAS HORAS EXTRA ##############################
@@ -778,7 +788,7 @@ class C_Salario():
         self.ventana2.geometry("1350x700+0+0")
         self.ventana2.title("Calcular Salario")
         self.ventana2.resizable(0,0)
-        self.ventana2.config(bg="blue")
+        self.ventana2.config(bg="DodgerBlue4")
         self.ventana.iconbitmap("Adds/icon.ico")
         self.ventana2.config(bd=25)
         self.ventana2.config(relief="groove")
@@ -834,7 +844,7 @@ class C_Salario():
         self.ventana1.geometry("500x500+500+100")
         self.ventana1.title("Horas Extra")
         self.ventana1.resizable(0,0)
-        self.ventana1.config(bg="blue")
+        self.ventana1.config(bg="DodgerBlue4")
         self.ventana1.iconbitmap("Adds/icon.ico")
         self.ventana1.config(bd=25)
         self.ventana1.config(relief="groove")
@@ -845,19 +855,20 @@ class C_Salario():
 
         self.horas = StringVar()
 
-        self.label2 = Label(self.ventana1, text="Horas", font=("Arial", 15), bg="blue", fg="white")
+        self.label2 = Label(self.ventana1, text="Horas", font=("Arial", 15), bg="DodgerBlue4", fg="white")
         self.label2.place(x=50, y=100)
-        self.entrada2 = Entry(self.ventana1, textvariable=self.horas, font=("Arial", 15))
+        self.entrada2 = Entry(self.ventana1, textvariable=self.horas, font=("Arial", 15),bg="DodgerBlue4",)
         self.entrada2.place(x=150, y=100)
 
-        self.boton1 = Button(self.ventana1, text="Calcular solo uno", font=("Arial", 15), command=self.calcular_horas)
+        self.boton1 = Button(self.ventana1, text="Calcular solo uno", font=("Arial", 15),bg="DodgerBlue4",
+        command=self.calcular_horas)
         self.boton1.place(x=200, y=150)
 
-        self.boton2 = Button(self.ventana1, text="Calcular Todo", font=("Arial", 15), 
+        self.boton2 = Button(self.ventana1, text="Calcular Todo", font=("Arial", 15),bg="DodgerBlue4", 
         command=self.calcular_todo_horas)
         self.boton2.place(x=200, y=200)
 
-        self.boton3 = Button(self.ventana1, text="Calcular Algunos", font=("Arial", 15), 
+        self.boton3 = Button(self.ventana1, text="Calcular Algunos", font=("Arial", 15), bg="DodgerBlue4",
         command=self.algunos)
         self.boton3.place(x=200, y=250)
 
@@ -929,7 +940,7 @@ class C_Salario():
             self.ventana2.geometry("500x500+500+100")
             self.ventana2.title("Horas Extra Todos")
             self.ventana2.resizable(0,0)
-            self.ventana2.config(bg="blue")
+            self.ventana2.config(bg="DodgerBlue4")
             self.ventana2.iconbitmap("Adds/icon.ico")
             self.ventana2.config(bd=25)
             self.ventana2.config(relief="groove")
@@ -940,17 +951,19 @@ class C_Salario():
 
             self.horas = StringVar()
 
-            self.label1 = Label(self.ventana2, text="Horas Extra", font=("Arial", 15), bg="blue", fg="white")
+            self.label1 = Label(self.ventana2, text="Horas Extra", font=("Arial", 15), bg="DodgerBlue4", fg="white")
             self.label1.place(x=50, y=50)
             self.entrada1 = Entry(self.ventana2, textvariable=self.horas, font=("Arial", 15))
             self.entrada1.place(x=175, y=50)
 
-            self.boton1 = Button(self.ventana2, text="Calcular", font=("Arial", 15), command=self.calcular_todo_horas2)
+            self.boton1 = Button(self.ventana2, text="Calcular", font=("Arial", 15), bg="DodgerBlue4",
+            command=self.calcular_todo_horas2)
             self.boton1.place(x=200, y=100)
 
             mensaje = StringVar()
             mensaje.set(" ")
-            self.label2 = Label(self.ventana2, textvariable=self.mensaje, font=("Arial", 15), bg="blue", fg="white")
+            self.label2 = Label(self.ventana2, textvariable=self.mensaje, font=("Arial", 15), bg="DodgerBlue4"
+            , fg="white")
             self.label2.place(x=50, y=150)
     
     """
@@ -975,7 +988,7 @@ class C_Salario():
             self.ventana3.geometry("500x500+500+100")
             self.ventana3.title("Horas Extra Algunos")
             self.ventana3.resizable(0,0)
-            self.ventana3.config(bg="blue")
+            self.ventana3.config(bg="DodgerBlue4")
             self.ventana3.iconbitmap("Adds/icon.ico")
             self.ventana3.config(bd=25)
             self.ventana3.config(relief="groove")
@@ -987,13 +1000,14 @@ class C_Salario():
             mensaje= StringVar()
             mensaje.set(" ")
 
-            self.label2 = Label(self.ventana3, text="Horas", font=("Arial", 15), bg="blue", fg="white")
+            self.label2 = Label(self.ventana3, text="Horas", font=("Arial", 15), bg="DodgerBlue4", fg="white")
             self.label2.place(x=50, y=100)
 
-            self.entrada2 = Entry(self.ventana3, textvariable=self.horas, font=("Arial", 15))
+            self.entrada2 = Entry(self.ventana3, textvariable=self.horas, font=("Arial", 15),bg="DodgerBlue4",)
             self.entrada2.place(x=150, y=100)
 
-            self.boton1 = Button(self.ventana3, text="Calcular", font=("Arial", 15), command=self.calcular_algunos)
+            self.boton1 = Button(self.ventana3, text="Calcular", font=("Arial", 15), bg="DodgerBlue4",
+            command=self.calcular_algunos)
             self.boton1.place(x=200, y=150)
 
 
@@ -1013,7 +1027,8 @@ class C_Salario():
             listbox.bind("<<ListboxSelect>>", self.onselect)
             listbox.pack()
             #resive la informacion de la funcion onselect que es la lista de los empleados seleccionados
-            self.boton2 = Button(self.ventana3, text="Calcular", font=("Arial", 15), command=self.calcular_algunos2)
+            self.boton2 = Button(self.ventana3, text="Calcular", font=("Arial", 15),bg="DodgerBlue4",
+             command=self.calcular_algunos2)
             self.boton2.place(x=200, y=400)
 
     """
@@ -1067,7 +1082,7 @@ class C_Salario():
         self.ventana4.geometry("500x500+500+100")
         self.ventana4.title("Graficas")
         self.ventana4.resizable(0,0)
-        self.ventana4.config(bg="blue")
+        self.ventana4.config(bg="DodgerBlue4")
         self.ventana4.iconbitmap("Adds/icon.ico")
         self.ventana4.config(bd=25)
         self.ventana4.config(relief="groove")
@@ -1076,22 +1091,28 @@ class C_Salario():
         self.ventana4.config(relief="groove")
         self.ventana4.config(cursor="pirate")
 
-        self.boton1 = Button(self.ventana4, text="Horas Semana", font=("Arial", 15), command=self.grafica1)
+        self.boton1 = Button(self.ventana4, text="Horas Semanales", font=("Arial", 15),bg="DodgerBlue4",
+         command=self.grafica1)
         self.boton1.place(x=50, y=100)
 
-        self.boton2 = Button(self.ventana4, text="Edad", font=("Arial", 15), command=self.grafica2)
+        self.boton2 = Button(self.ventana4, text="Edad", font=("Arial", 15), bg="DodgerBlue4",
+        command=self.grafica2)
         self.boton2.place(x=50, y=150)
 
-        self.boton3 = Button(self.ventana4, text="Horas Extra", font=("Arial", 15), command=self.grafica3)
+        self.boton3 = Button(self.ventana4, text="Horas Extra", font=("Arial", 15),bg="DodgerBlue4",
+         command=self.grafica3)
         self.boton3.place(x=50, y=200)
 
-        self.boton4 = Button(self.ventana4, text="Salario Total", font=("Arial", 15), command=self.grafica4)
+        self.boton4 = Button(self.ventana4, text="Salario Total", font=("Arial", 15),bg="DodgerBlue4",
+         command=self.grafica4)
         self.boton4.place(x=50, y=250)
 
-        self.boton5 = Button(self.ventana4, text="Genero", font=("Arial", 15), command=self.grafica5)
+        self.boton5 = Button(self.ventana4, text="Genero", font=("Arial", 15),bg="DodgerBlue4",
+         command=self.grafica5)
         self.boton5.place(x=50, y=300)
 
-        self.boton6 = Button(self.ventana4, text="Volver", font=("Arial", 15), command=self.volver2)
+        self.boton6 = Button(self.ventana4, text="Volver", font=("Arial", 15),bg="DodgerBlue4",
+         command=self.volver2)
         self.boton6.place(x=50, y=350)
 
     ############################# Boton 6  de las graficas#############################
@@ -1128,6 +1149,7 @@ class C_Salario():
         plt.title("Horas ")
         plt.xlabel("Horas ")
         plt.ylabel("Cantidad de Empleados")
+        plt.title("Horas Semanales de los Empleados")
         plt.show()
 
     ############################# Grafica 2 #############################
@@ -1160,6 +1182,7 @@ class C_Salario():
         plt.title("Grafica de Edad")
         plt.xlabel("Edad")
         plt.ylabel("Cantidad de Empleados")
+        plt.title("Edad")
         plt.show()
 
     
@@ -1193,6 +1216,7 @@ class C_Salario():
         plt.title("Grafica de Horas Extra")
         plt.xlabel("Horas Extra")
         plt.ylabel("Empleados")
+        plt.title("Horas Extra")
         plt.show()
 
     ############################# Grafica 4 #############################
@@ -1223,6 +1247,7 @@ class C_Salario():
         plt.title("Grafica de Salario sin Horas Extra")
         plt.xlabel("Salario")
         plt.ylabel("Empleados")
+        plt.title("Salario sin Horas Extra")
         plt.show()
 
     ############################# Grafica 5 #############################
@@ -1266,7 +1291,7 @@ class Salario_Empleado():
         self.ventana.geometry("500x500+500+100")
         self.ventana.title("Calcular Salario")
         self.ventana.resizable(0,0)
-        self.ventana.config(bg="Black")
+        self.ventana.config(bg="DodgerBlue4")
         self.ventana.iconbitmap("Adds/icon.ico")
         self.ventana.config(bd=25)
         self.ventana.config(relief="groove")
@@ -1282,22 +1307,25 @@ class Salario_Empleado():
 
         #Labels, Entrys y Botones
 
-        self.label1 = Label(self.ventana, text="Codigo", font=("Arial", 15), bg="blue", fg="white")
+        self.label1 = Label(self.ventana, text="Codigo", font=("Arial", 15),bg="DodgerBlue4", fg="white")
         self.label1.place(x=50, y=50)
 
-        self.entrada1 = Entry(self.ventana, textvariable=self.codigo, font=("Arial", 15))
+        self.entrada1 = Entry(self.ventana, textvariable=self.codigo, font=("Arial", 15),bg="DodgerBlue4")
         self.entrada1.place(x=150, y=50)
 
-        self.boton1 = Button(self.ventana, text="Calcular", font=("Arial", 15), command=self.calcular)
+        self.boton1 = Button(self.ventana, text="Calcular", font=("Arial", 15),bg="DodgerBlue4",
+         command=self.calcular)
         self.boton1.place(x=200, y=100)
 
-        self.boton2 = Button(self.ventana, text="Calcular Todo", font=("Arial", 15), command=self.liquidacion)
+        self.boton2 = Button(self.ventana, text="Calcular Todo", font=("Arial", 15),bg="DodgerBlue4",
+         command=self.liquidacion)
         self.boton2.place(x=175, y=150)
 
-        self.label2 = Label(self.ventana, textvariable=self.mensaje, font=("Arial", 15), bg="blue", fg="white")
+        self.label2 = Label(self.ventana, textvariable=self.mensaje, font=("Arial", 15), bg="DodgerBlue4", fg="white")
         self.label2.place(x=50, y=250)
 
-        self.boton3 = Button(self.ventana, text="Volver", font=("Arial", 15), command=self.volver)
+        self.boton3 = Button(self.ventana, text="Volver", font=("Arial", 15), bg="DodgerBlue4",
+        command=self.volver)
         self.boton3.place(x=0, y=0)
 
     ######### Boton 1 #########
@@ -1377,7 +1405,7 @@ class Ventana_Ordenar():
         self.ventana.geometry("500x500+500+100")
         self.ventana.title("Ordenar")
         self.ventana.resizable(0,0)
-        self.ventana.config(bg="Black")
+        self.ventana.config(bg="DodgerBlue4")
         self.ventana.iconbitmap("Adds/icon.ico")
         self.ventana.config(bd=25)
         self.ventana.config(relief="groove")
@@ -1392,7 +1420,7 @@ class Ventana_Ordenar():
 
         #Labels, Combobox y Botones
 
-        self.label1 = Label(self.ventana, text="Ordenar por", font=("Arial", 15), bg="blue", fg="white")
+        self.label1 = Label(self.ventana, text="Ordenar por", font=("Arial", 15), bg="DodgerBlue4", fg="white")
         self.label1.place(x=50, y=50)
 
         self.combobox1 = ttk.Combobox(self.ventana, textvariable=self.orden, state="readonly")
@@ -1400,20 +1428,21 @@ class Ventana_Ordenar():
         , "Horas Extras", "Fecha de Ingreso", "Salario Total")
         self.combobox1.place(x=200, y=50)
 
-        self.boton1 = Button(self.ventana, text="Ordenar", font=("Arial", 15), command=self.ordenar)
+        self.boton1 = Button(self.ventana, text="Ordenar", font=("Arial", 15), bg="DodgerBlue4",
+        command=self.ordenar)
         self.boton1.place(x=200, y=100)
 
-        self.label2 = Label(self.ventana, textvariable=self.mensaje, font=("Arial", 15), bg="blue", fg="white")
+        self.label2 = Label(self.ventana, textvariable=self.mensaje, font=("Arial", 15), bg="DodgerBlue4", fg="white")
         self.label2.place(x=50, y=250)
         
         self.titulo = Label(self.ventana, text="Para ver ta tabla \n presione el siguiente boton",
-         font=("Arial", 20), bg="black", fg="white")
+         font=("Arial", 20),bg="DodgerBlue4", fg="white")
         self.titulo.place(x=100, y=300)
 
-        self.boton2 = Button(self.ventana, text="Ver Tabla", font=("Arial", 15), command=self.ver_tabla)
+        self.boton2 = Button(self.ventana, text="Ver Tabla", font=("Arial", 15),bg="DodgerBlue4", command=self.ver_tabla)
         self.boton2.place(x=200, y=400)
 
-        self.boton3 = Button(self.ventana, text="Volver", font=("Arial", 15), command=self.volver)
+        self.boton3 = Button(self.ventana, text="Volver", font=("Arial", 15), bg="DodgerBlue4",command=self.volver)
         self.boton3.place(x=0, y=0)
 
     ######### Boton 1 #########
@@ -1518,7 +1547,7 @@ class Ventana_Retirar():
         self.ventana.geometry("500x500+500+100")
         self.ventana.title("Retirar")
         self.ventana.resizable(0,0)
-        self.ventana.config(bg="Black")
+        self.ventana.config(bg="DodgerBlue4")
         self.ventana.iconbitmap("Adds/icon.ico")
         self.ventana.config(bd=25)
         self.ventana.config(relief="groove")
@@ -1530,19 +1559,23 @@ class Ventana_Retirar():
         self.mensaje = StringVar()
         self.mensaje.set("")
 
-        self.boton1 = Button(self.ventana, text="Retirar un suario", font=("Arial", 15), command=self.retirar)
+        self.boton1 = Button(self.ventana, text="Retirar un suario", font=("Arial", 15),bg="DodgerBlue4",
+         command=self.retirar)
         self.boton1.place(x=200, y=100)
 
-        self.label2 = Label(self.ventana, textvariable=self.mensaje, font=("Arial", 15), bg="blue", fg="white")
+        self.label2 = Label(self.ventana, textvariable=self.mensaje, font=("Arial", 15), bg="DodgerBlue4", fg="white")
         self.label2.place(x=50, y=250)
 
-        self.boton2 = Button(self.ventana, text="Tu liquidacion", font=("Arial", 15), command=self.obtener_liquidacion)
+        self.boton2 = Button(self.ventana, text="Tu liquidacion", font=("Arial", 15),bg="DodgerBlue4",
+         command=self.obtener_liquidacion)
         self.boton2.place(x=200, y=400)
 
-        self.boton3 = Button(self.ventana, text="Retirar Varios", font=("Arial", 15), command=self.retirarVarios)
+        self.boton3 = Button(self.ventana, text="Retirar Varios", font=("Arial", 15),
+         command=self.retirarVarios)
         self.boton3.place(x=200, y=300)
 
-        self.boton4 = Button(self.ventana, text="Volver", font=("Arial", 15), command=self.volver)
+        self.boton4 = Button(self.ventana, text="Volver", font=("Arial", 15),bg="DodgerBlue4",
+         command=self.volver)
         self.boton4.place(x=0, y=0)
 
     ######### Boton 1 #########
@@ -1760,16 +1793,16 @@ class Ventana_Pricipal():
         self.ventana.title("Menu principal")
         self.ventana.iconbitmap("Adds/icon.ico")
         self.ventana.geometry("500x500+500+100")
-        self.ventana.config(bg="black")
+        self.ventana.config(bg="DodgerBlue4")
         self.ventana.config(relief="groove")
         self.ventana.config(cursor="pirate")
         self.ventana.config(bd=25)
         self.ventana.config(relief="groove")
         self.ventana.config(cursor="pirate")
-        self.boton1 = Button(self.ventana, text="Ingresar como empleado", font=("Arial", 15),
-         command=self.ingresar_empleado)
+        self.boton1 = Button(self.ventana, text="Ingresar como empleado", font=("Arial", 15), bg="DodgerBlue4",
+            command=self.ingresar_empleado)
         self.boton1.place(x=120, y=30)
-        self.boton2 = Button(self.ventana, text="Ingresar como administrador", font=("Arial", 15),
+        self.boton2 = Button(self.ventana, text="Ingresar como administrador", font=("Arial", 15),bg="DodgerBlue4",
          command=self.Contraseña)
         self.boton2.place(x=110, y=100)
         """	
@@ -1793,7 +1826,7 @@ class Ventana_Pricipal():
         self.ventana.iconbitmap("Adds/icon.ico")
         self.ventana.title("Contraseña")
         self.ventana.geometry("500x200+500+100")
-        self.ventana.config(bg="Black")
+        self.ventana.config(bg="DodgerBlue4")
         self.ventana.config(relief="groove")
         self.ventana.config(cursor="pirate")
         self.ventana.config(bd=25)
@@ -1805,20 +1838,23 @@ class Ventana_Pricipal():
         self.IMG1.pack()
         self.IMG1.place(x = 75, y = 150)
         """	
-        self.label1 = Label(self.ventana, text="Contraseña", font=("Arial", 15), bg="salmon4", fg="white")
+        self.label1 = Label(self.ventana, text="Contraseña:", font=("Arial", 15), bg="DodgerBlue4", fg="white")
         self.label1.place(x=50, y=50)
 
         self.contraseña = StringVar()
+        self.contraseña.set("")
 
         #Hacer que el usuario no pueda ver la contraseña que esta escribiendo
 
         self.entrada1 = Entry(self.ventana, textvariable=self.contraseña, font=("Arial", 15), show="*")
-        self.entrada1.place(x=200, y=50)
+        self.entrada1.place(x=175, y=50)
 
-        self.boton1 = Button(self.ventana, text="Ingresar", font=("Arial", 15), command=self.ingresar_administrador)
+        self.boton1 = Button(self.ventana, text="Ingresar", font=("Arial", 15), bg="DodgerBlue4",
+        command=self.ingresar_administrador)
         self.boton1.place(x=250, y=100)
 
-        self.boton2 = Button(self.ventana, text="Volver", font=("Arial", 15), command=self.Volver)
+        self.boton2 = Button(self.ventana, text="Volver", font=("Arial", 15), bg="DodgerBlue4",
+        command=self.Volver)
         self.boton2.place(x=0, y=0)
     
     """
@@ -1833,17 +1869,17 @@ class Ventana_Pricipal():
         
         if contraseña == "One Piece":
             self.contador = 0
-            contraseña = self.contraseña.set(" ")
+            contraseña = self.contraseña.set("")
             self.llamar()
 
         else:
             messagebox.showerror("Error", "Contraseña incorrecta")
-            contraseña = self.contraseña.set(" ")
+            contraseña = self.contraseña.set("")
             self.contador += 1
 
             if self.contador == 3:
                 messagebox.showerror("Error", "Ha ingresado mal la contraseña 3 veces, el programa se cerrara")
-                contraseña = self.contraseña.set(" ")
+                contraseña = self.contraseña.set("")
                 self.ventana.destroy()
 
             else:
