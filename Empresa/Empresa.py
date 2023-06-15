@@ -1,11 +1,8 @@
 from tkinter import  *
-from pygame import *
 import csv
 from tkinter import messagebox # Para mostrar mensajes
 from tkinter import ttk # Para usar los combobox
 from tkinter import filedialog # Para abrir archivos
-from PIL import Image, ImageTk # Para usar imagenes
-import PIL.Image # Ajusta el tamaño de la imagen
 import os # Para abrir archivos
 import time # Para usar el reloj
 import datetime # Para usar el reloj
@@ -17,26 +14,16 @@ from matplotlib import style # Para las graficas
 from matplotlib import animation # Para las graficas
 from matplotlib import get_backend
 
+"""
+Nota: En la carpeta del archivo de excel llamado DatosE.xlsx debe haber una hoja llamada "Datos Empleados"
+dode se tendra acceso a los datos de los empleados en unarchivo mas amigable, ademas de que se actualiza cada vez
+que se ejecuta el codigo
+"""
 
 lista = [] # Lista que contendra los datos de los empleados
 lista2 = [] #donde se guardan los datos de los empleados que se van a eliminar o modificar
 ultima = [] # Ultima vez de ejecucion del codigo
 
-"""
-Imagenes: esta funcion pondra imagenes con un tamaño determinado
-E: una imagen
-R: png o gif
-S: la imagen con el tamaño indicado
-"""
-def Imagenes(img,size):
-    ruta = None
-    if size != None:
-        ruta = PIL.Image.open("Adds/"+img).resize((size))
-    else:
-        ruta = PIL.Image.open("Adds/"+img)
-    imagen = ImageTk.PhotoImage(ruta)
-    return imagen 
-    
 """
 leer:Funcion que lee el archivo de texto con las caracteristica del robot
 E: Nada
@@ -574,7 +561,7 @@ class Ventana_Jefe():
 
         self.Ventana = ventana.withdraw()
         self.ventana = Toplevel()
-        self.ventana.geometry("500x500+500+100")
+        self.ventana.geometry("400x500+500+100")
         self.ventana.title("Jefe")
         self.ventana.resizable(0,0)
         self.ventana.config(bg="DodgerBlue4")
@@ -590,19 +577,19 @@ class Ventana_Jefe():
 
         self.boton1 = Button(self.ventana, text="Añadir Usuario", font=("Arial", 15),bg="DodgerBlue4",
          command=self.añadir_usuario)
-        self.boton1.place(x=190, y= 175)
+        self.boton1.place(x=140, y= 175)
 
         self.boton2 = Button(self.ventana, text="Calcular Salario", font=("Arial", 15), bg="DodgerBlue4",
         command=self.Verificar_Monto)
-        self.boton2.place(x=180, y= 275)
+        self.boton2.place(x=130, y= 275)
 
         self.boton3 = Button(self.ventana, text="Ordenar por", font=("Arial", 15), bg="DodgerBlue4",
         command=self.Ordenar)
-        self.boton3.place(x=190, y=75)
+        self.boton3.place(x=140, y=75)
 
         self.boton5 = Button(self.ventana, text="Retirar Empleado", font=("Arial", 15),bg="DodgerBlue4",
          command=self.Retirar)
-        self.boton5.place(x=180, y=375)
+        self.boton5.place(x=130, y=375)
 
         self.boton6 = Button(self.ventana, text="Volver", font=("Arial", 15), bg="DodgerBlue4",
         command=self.Volver)
@@ -626,13 +613,13 @@ class Ventana_Jefe():
     empleados por nombre, apellido, codigo, sueldo, horas, sexo y edad
     """
     def Ordenar(self):
-        self.ventana3 = Ventana_Ordenar()
+        self.ventana3 = Ventana_Ordenar(self.ventana)
     
     """
     def Retirar(self): Esta funcion abre una ventana donde se podra retirar un empleado y calcular su salario final
     """
     def Retirar(self):
-        self.ventana4 = Ventana_Retirar()
+        self.ventana4 = Ventana_Retirar(self.ventana)
 
     """	
     def Volver(self): Esta funcion abre una ventana inicial
@@ -709,7 +696,7 @@ class C_Salario():
 
         self.Ventana = ventana.withdraw()
         self.ventana = Toplevel()
-        self.ventana.geometry("500x500+500+100")
+        self.ventana.geometry("500x400+500+100")
         self.ventana.title("Calcular Salario")
         self.ventana.resizable(0,0)
         self.ventana.config(bg="DodgerBlue4")
@@ -754,7 +741,7 @@ class C_Salario():
         self.boton5.place(x=200, y=250)
 
         self.label2 = Label(self.ventana, textvariable=self.mensaje, font=("Arial", 15),bg="DodgerBlue4", fg="white")
-        self.label2.place(x=50, y=350)
+        self.label2.place(x=50, y=300)
     
     ############################## FUNCIONES INDEPENDIENTES A LAS HORAS EXTRA ##############################
     """
@@ -841,7 +828,7 @@ class C_Salario():
     """
     def horas_extra(self):
         self.ventana1 = Toplevel()
-        self.ventana1.geometry("500x500+500+100")
+        self.ventana1.geometry("500x400+500+100")
         self.ventana1.title("Horas Extra")
         self.ventana1.resizable(0,0)
         self.ventana1.config(bg="DodgerBlue4")
@@ -871,6 +858,10 @@ class C_Salario():
         self.boton3 = Button(self.ventana1, text="Calcular Algunos", font=("Arial", 15), bg="DodgerBlue4",
         command=self.algunos)
         self.boton3.place(x=200, y=250)
+
+        self.boton4 = Button(self.ventana1, text="Volver", font=("Arial", 15), bg="DodgerBlue4",
+        command=self.volver)
+        self.boton4.place(x=0, y=0)
 
     #############################Boton 1#############################
         """
@@ -1075,7 +1066,8 @@ class C_Salario():
     """
     def graficas(self): Esta funcion se encarga de mostrar las graficas de los empleados, de las horas extra
     de los empleados, de los salarios de los empleados, de los salarios de los empleados con las horas extra
-    y de los salarios de los empleados sin las horas extra tambien del genero de los empleados
+    y de los salarios de los empleados sin las horas extra tambien del genero de los empleados, cada grafica se puede 
+    descargar en formato png
     """
     def graficas(self):
         self.ventana4 = Toplevel()
@@ -1400,7 +1392,9 @@ class Ventana_Ordenar(): Esta clase es la que se encarga de ordenar los empleado
 """
 class Ventana_Ordenar():
 
-    def __init__(self):
+    def __init__(self,ventana):
+
+        self.Ventana = ventana.withdraw()
         self.ventana = Toplevel()
         self.ventana.geometry("500x500+500+100")
         self.ventana.title("Ordenar")
@@ -1542,7 +1536,9 @@ class Ventana_Retirar(): Esta clase es la que se encarga de retirar un empleado 
 """
 class Ventana_Retirar():
 
-    def __init__(self):
+    def __init__(self,ventana):
+
+        self.Ventana = ventana.withdraw()
         self.ventana = Toplevel()
         self.ventana.geometry("500x500+500+100")
         self.ventana.title("Retirar")
@@ -1570,7 +1566,7 @@ class Ventana_Retirar():
          command=self.obtener_liquidacion)
         self.boton2.place(x=200, y=400)
 
-        self.boton3 = Button(self.ventana, text="Retirar Varios", font=("Arial", 15),
+        self.boton3 = Button(self.ventana, text="Retirar Varios", font=("Arial", 15),bg="DodgerBlue4",
          command=self.retirarVarios)
         self.boton3.place(x=200, y=300)
 
@@ -1590,7 +1586,8 @@ class Ventana_Retirar():
             for i in lista:
                 listbox.insert(END, i[2] + " " + i[0] + " " + i[1])
             listbox.bind("<<ListboxSelect>>", self.onselect2)
-            self.boton2 = Button(self.ventana, text="Listo", font=("Arial", 15), command=self.retirar_aux)
+            self.boton2 = Button(self.ventana, text="Listo", font=("Arial", 15),bg="DodgerBlue4",
+             command=self.retirar_aux)
             self.boton2.place(x=300, y=300)
     
     """
@@ -1631,7 +1628,7 @@ class Ventana_Retirar():
             for i in lista:
                 listbox.insert(END, i[2] + " " + i[0] + " " + i[1])
             listbox.bind("<<ListboxSelect>>", self.onselect3)
-            self.boton2 = Button(self.ventana, text="Tu liquidacion", font=("Arial", 15), 
+            self.boton2 = Button(self.ventana, text="Tu liquidacion", font=("Arial", 15), bg="DodgerBlue4",
             command=self.CalculeLiquidacion)
             self.boton2.place(x=300, y=400)
     
@@ -1655,7 +1652,8 @@ class Ventana_Retirar():
             for i in lista:
                 listbox.insert(END, i[2] + " " + i[0] + " " + i[1])
             listbox.bind("<<ListboxSelect>>", self.onselect4)
-            self.boton2 = Button(self.ventana, text="Listo", font=("Arial", 15), command=self.retirarVarios_aux)
+            self.boton2 = Button(self.ventana, text="Listo", font=("Arial", 15), bg="DodgerBlue4",
+            command=self.retirarVarios_aux)
             self.boton2.place(x=300, y=100)
 
     def onselect4(self, evt):
@@ -1777,8 +1775,7 @@ class Ventana_Retirar():
     volver(self): Esta funcion se encarga de volver a la ventana anterior
     """
     def volver(self):
-        self.ventana.destroy()
-        ventana = self.Ventana_Jefe(self.ventana)
+         self.ventana = Ventana_Jefe(self.ventana)
 
 #Clase de la ventana principal
 """
@@ -1792,37 +1789,35 @@ class Ventana_Pricipal():
         self.contador = contador
         self.ventana.title("Menu principal")
         self.ventana.iconbitmap("Adds/icon.ico")
-        self.ventana.geometry("500x500+500+100")
+        self.ventana.geometry("500x200+500+100")
         self.ventana.config(bg="DodgerBlue4")
         self.ventana.config(relief="groove")
         self.ventana.config(cursor="pirate")
         self.ventana.config(bd=25)
         self.ventana.config(relief="groove")
         self.ventana.config(cursor="pirate")
+
         self.boton1 = Button(self.ventana, text="Ingresar como empleado", font=("Arial", 15), bg="DodgerBlue4",
             command=self.ingresar_empleado)
         self.boton1.place(x=120, y=30)
         self.boton2 = Button(self.ventana, text="Ingresar como administrador", font=("Arial", 15),bg="DodgerBlue4",
-         command=self.Contraseña)
+         command=self.Contraseñas)
         self.boton2.place(x=110, y=100)
-        """	
-        self.Logo1 = Imagenes("Logo 1.png",(320,280))
-        self.IMG = Label(self.ventana,image = self.Logo1)
-        self.IMG.pack()
-        self.IMG.place(x = 75, y = 150)
-        """	
 
         self.contador = 0
 
         self.ventana.mainloop()
 
-    def Contraseña(self):
+
+    def Contraseñas(self):
+        self.Contraseña(self.ventana)
+
+    def Contraseña(self,ventana):
         """
         Cerrar la ventana anterior y dejar esta con principal
         """
-        self.ventana.destroy()
-        self.ventana = Tk()
-        self.ventana.update()
+        self.Ventana = ventana.withdraw()
+        self.ventana = Toplevel()
         self.ventana.iconbitmap("Adds/icon.ico")
         self.ventana.title("Contraseña")
         self.ventana.geometry("500x200+500+100")
@@ -1832,12 +1827,7 @@ class Ventana_Pricipal():
         self.ventana.config(bd=25)
         self.ventana.config(relief="groove")
         self.ventana.config(cursor="pirate")
-        """
-        self.Logo2 = Imagenes("One Piece.png",(320,280))
-        self.IMG1 = Label(self.ventana,image = self.Logo2)
-        self.IMG1.pack()
-        self.IMG1.place(x = 75, y = 150)
-        """	
+
         self.label1 = Label(self.ventana, text="Contraseña:", font=("Arial", 15), bg="DodgerBlue4", fg="white")
         self.label1.place(x=50, y=50)
 
@@ -1856,14 +1846,14 @@ class Ventana_Pricipal():
         self.boton2 = Button(self.ventana, text="Volver", font=("Arial", 15), bg="DodgerBlue4",
         command=self.Volver)
         self.boton2.place(x=0, y=0)
+
+        self.ventana.mainloop()
     
     """
     def ingresar_administrador(self): Esta funcion se encarga de verificar si la contraseña es correcta y si lo es
     llama a la clase Ventana_Jefe
     """
     def ingresar_administrador(self):
-
-        self.ventana.update()
 
         contraseña = self.contraseña.get()
         
